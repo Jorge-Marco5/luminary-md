@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Editor de Markdown",
-  description: "Editor de markdown con vista previa",
+  title: "Luminary",
+  description: "Editor de markdown online",
 };
 
 export const fontMono = "Euclid Circular A";
@@ -22,8 +22,9 @@ export default function RootLayout({
           name="description"
           content="Editor de markdown con vista previa"
         />
-        <meta name="author" content="Marklantern" />
+        <meta name="author" content="Luminary" />
         <meta name="keywords" content="editor, markdown, vista previa" />
+        <title>Luminary</title>
         <link rel="icon" href="/favicon.ico" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -34,6 +35,10 @@ export default function RootLayout({
         <link
           href="https://fonts.cdnfonts.com/css/euclid-circular-a"
           rel="stylesheet"
+        />
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
         />
       </head>
       <body className="antialiased">{children}</body>
