@@ -29,6 +29,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
+      <head>
+        <link
+          href="https://fonts.cdnfonts.com/css/euclid-circular-a"
+          rel="stylesheet"
+        />
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        />
+      </head>
       <body>{children}</body>
     </html>
   );
