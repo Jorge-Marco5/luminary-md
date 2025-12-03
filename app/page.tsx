@@ -147,11 +147,11 @@ const MarkdownEditor = () => {
                 </button>
               </Drawer.Trigger>
               <Drawer.Portal>
-                <Drawer.Overlay className="fixed inset-0 bg-black/40" />
-                <Drawer.Content className="bg-white dark:bg-gray-900 flex flex-col rounded-t-[10px] h-[96%] mt-24 fixed bottom-0 left-0 right-0 outline-none z-50">
+                <Drawer.Overlay className="fixed inset-0 bg-black" />
+                <Drawer.Content className="bg-white dark:bg-neutral-950 flex flex-col rounded-t-[10px] h-[96%] mt-24 fixed bottom-0 left-0 right-0 outline-none z-50">
                   <Drawer.Title className="hidden">Editar</Drawer.Title>
-                  <div className="p-4 bg-white dark:bg-gray-900 rounded-t-[10px] flex-1 flex flex-col">
-                    <div className="mx-auto w-12 h-1.5 shrink-0 rounded-full bg-gray-300 dark:bg-gray-700 mb-8" />
+                  <div className="p-4 bg-white dark:bg-neutral-900 rounded-t-[10px] flex-1 flex flex-col">
+                    <div className="mx-auto w-12 h-1.5 shrink-0 rounded-full bg-gray-300 dark:bg-neutral-700 mb-8" />
                     <div className="flex-1 flex flex-col min-h-0">
                       <div className="flex items-center gap-2 p-2 border-b border-gray-200 dark:border-neutral-700 overflow-x-auto mb-2">
                         <EditorToolbar onInsertMarkdown={insertMarkdown} />

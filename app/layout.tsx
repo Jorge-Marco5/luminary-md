@@ -4,9 +4,23 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Luminary",
   description: "Editor de markdown online",
+  openGraph: {
+    title: "Luminary",
+    description: "Editor de markdown online",
+    url: "https://luminary-md.vercel.app",
+    siteName: "Luminary",
+    images: [
+      {
+        url: "https://luminary-md.vercel.app/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Texto alternativo de la imagen",
+      },
+    ],
+    locale: "es",
+    type: "website",
+  },
 };
-
-export const fontMono = "Euclid Circular A";
 
 export default function RootLayout({
   children,
@@ -15,33 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta
-          name="description"
-          content="Editor de markdown con vista previa"
-        />
-        <meta name="author" content="Luminary" />
-        <meta name="keywords" content="editor, markdown, vista previa" />
-        <title>Luminary</title>
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.cdnfonts.com/css/euclid-circular-a"
-          rel="stylesheet"
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-        />
-      </head>
-      <body className="antialiased">{children}</body>
+      <body>{children}</body>
     </html>
   );
 }

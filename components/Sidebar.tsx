@@ -92,7 +92,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             <strong>
               <p className="text-sm leading-relaxed">
                 De momento, puedes usar el editor en línea para crear archivos
-                Markdown y descargarlos en tu computadora.
+                Markdown y descargarlos en tu dispositivo.
               </p>
             </strong>
           </div>

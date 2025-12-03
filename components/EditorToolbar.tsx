@@ -29,7 +29,7 @@ const EditorToolbar: React.FC<EditorToolbarProps> = ({ onInsertMarkdown }) => {
             e.target.value = "";
           }
         }}
-        className="bg-gray-50 dark:text-gray-200 dark:bg-gray-900 border-none focus:ring-0 focus:border-none"
+        className="bg-gray-50 dark:text-gray-200 dark:bg-neutral-950 border-none focus:ring-0 focus:border-none"
         title="Insertar encabezado"
         defaultValue=""
       >
