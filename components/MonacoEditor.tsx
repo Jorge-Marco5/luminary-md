@@ -17,14 +17,19 @@ const MonacoEditor: React.FC<MonacoEditorProps> = ({
   onMount,
 }) => {
   const editorRef = useRef<any>(null);
+  const onScrollRef = useRef(onScroll);
+
+  useEffect(() => {
+    onScrollRef.current = onScroll;
+  }, [onScroll]);
 
   const handleEditorDidMount: OnMount = (editor, monaco) => {
     editorRef.current = editor;
 
     // Listen to scroll events
     editor.onDidScrollChange((e) => {
-      if (onScroll) {
-        onScroll(e.scrollTop);
+      if (onScrollRef.current) {
+        onScrollRef.current(e.scrollTop);
       }
     });
 

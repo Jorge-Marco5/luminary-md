@@ -287,6 +287,34 @@ export const useMarkdownEditor = () => {
   };
 
   const insertMarkdown = (before: string, after = "", placeholder = "") => {
+    // Check for mobile editor first
+    const mobileTextarea = document.getElementById(
+      "editor-mobile"
+    ) as HTMLTextAreaElement;
+
+    // If mobile textarea is visible, use it
+    if (mobileTextarea && mobileTextarea.offsetParent !== null) {
+      const start = mobileTextarea.selectionStart;
+      const end = mobileTextarea.selectionEnd;
+      const selectedText = content.substring(start, end) || placeholder;
+      const newText =
+        content.substring(0, start) +
+        before +
+        selectedText +
+        after +
+        content.substring(end);
+      setContent(newText);
+
+      setTimeout(() => {
+        mobileTextarea.focus();
+        mobileTextarea.setSelectionRange(
+          start + before.length,
+          start + before.length + selectedText.length
+        );
+      }, 0);
+      return;
+    }
+
     if (monacoInstance) {
       const selection = monacoInstance.getSelection();
       const model = monacoInstance.getModel();
@@ -305,10 +333,6 @@ export const useMarkdownEditor = () => {
 
       // Restore focus and selection
       monacoInstance.focus();
-      // Calculate new cursor position (simplified)
-      // For more complex selection logic, we might need more math,
-      // but usually placing cursor at end or selecting the inserted text is fine.
-      // Here we just let Monaco handle it or could refine it.
       return;
     }
 
