@@ -20,11 +20,12 @@ import EditorToolbar from "../components/EditorToolbar";
 import MarkdownPreview from "../components/MarkdownPreview";
 import { alertReloadPage } from "../hooks/alertReloadPage";
 import dynamic from "next/dynamic";
+import ModalViewImage from "../components/modalViewImage";
 
 const MonacoEditor = dynamic(() => import("../components/MonacoEditor"), {
   ssr: false,
   loading: () => (
-    <div className="h-full w-full bg-gray-50 dark:bg-neutral-900 animate-pulse" />
+    <div className="h-full w-full bg-gray-50 dark:bg-neutral-950 animate-pulse" />
   ),
 });
 
@@ -57,6 +58,8 @@ const MarkdownEditor = () => {
     toggleFolder,
     setSelectedFolderPath,
     setMonacoInstance,
+    viewingImage,
+    setViewingImage,
   } = useMarkdownEditor();
 
   const fileTree = organizeFiles(files);
@@ -72,6 +75,13 @@ const MarkdownEditor = () => {
           onClose={() => setAlert(null)}
         />
       )}
+
+      <ModalViewImage
+        isOpen={!!viewingImage}
+        onClose={() => setViewingImage(null)}
+        imageUrl={viewingImage?.url || ""}
+        altText={viewingImage?.alt}
+      />
       {/* Mobile Backdrop */}
       {sidebarOpen && (
         <div

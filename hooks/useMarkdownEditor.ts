@@ -32,6 +32,7 @@ export const useMarkdownEditor = () => {
   }, []);
 
   // Helper to scan and update everything
+  //escanear archivos .md e imagenes en el directorio
   const scanDirectory = async (handle: any) => {
     const handles = new Map<string, any>();
     handles.set("", handle);
@@ -41,7 +42,12 @@ export const useMarkdownEditor = () => {
       for await (const entry of dirHandle.values()) {
         const entryPath = path ? `${path}/${entry.name}` : entry.name;
         if (entry.kind === "file") {
-          if (entry.name.endsWith(".md")) {
+          if (
+            entry.name.endsWith(".md") ||
+            entry.name.endsWith(".png") ||
+            entry.name.endsWith(".jpg") ||
+            entry.name.endsWith(".jpeg")
+          ) {
             const file = await entry.getFile();
             fileList.push({
               name: entry.name,
@@ -245,12 +251,25 @@ export const useMarkdownEditor = () => {
     }
   };
 
+  const [viewingImage, setViewingImage] = useState<{
+    url: string;
+    alt: string;
+  } | null>(null);
+
   const loadFile = async (fileObj: any) => {
     try {
       let file = fileObj.file;
       if (fileObj.handle) {
         file = await fileObj.handle.getFile();
       }
+
+      // Check for image extensions
+      if (/\.(png|jpe?g|gif|webp)$/i.test(file.name)) {
+        const url = URL.createObjectURL(file);
+        setViewingImage({ url, alt: file.name });
+        return;
+      }
+
       const text = await file.text();
       setContent(text);
       setCurrentFile({ ...fileObj, file });
@@ -472,5 +491,7 @@ export const useMarkdownEditor = () => {
     organizeFiles,
     toggleFolder,
     setMonacoInstance,
+    viewingImage,
+    setViewingImage,
   };
 };

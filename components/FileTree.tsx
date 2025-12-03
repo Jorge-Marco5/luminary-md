@@ -72,6 +72,7 @@ const FileTree: React.FC<FileTreeProps> = ({
       })}
       {files.map((file: any) => (
         <div
+          // si es una imagen mostrar icono de imagen, si es un archivo markdown mostrar icono de markdown
           key={file.path}
           className={`flex rounded-md items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-neutral-800 cursor-pointer ${
             currentFile?.path === file.path
@@ -80,7 +81,13 @@ const FileTree: React.FC<FileTreeProps> = ({
           }`}
           onClick={() => onLoadFile(file)}
         >
-          <i className="fa-brands fa-markdown text-violet-500 dark:text-violet-600 hover:text-violet-600 dark:hover:text-violet-400 p-1 w-6 h-6 shrink-0"></i>
+          <i
+            className={
+              file.path.endsWith(".md")
+                ? "fa-brands fa-markdown text-violet-500 dark:text-violet-600 hover:text-violet-600 dark:hover:text-violet-400 p-1 w-6 h-6 shrink-0"
+                : "fa-solid fa-image text-violet-500 dark:text-violet-600 hover:text-violet-600 dark:hover:text-violet-400 p-1 w-6 h-6 shrink-0"
+            }
+          ></i>
           <span className="text-[0.9rem] truncate">{file.name}</span>
         </div>
       ))}
