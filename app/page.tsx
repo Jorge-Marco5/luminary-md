@@ -18,6 +18,7 @@ import { useMarkdownEditor } from "../hooks/useMarkdownEditor";
 import Sidebar from "../components/Sidebar";
 import EditorToolbar from "../components/EditorToolbar";
 import MarkdownPreview from "../components/MarkdownPreview";
+import { alertReloadPage } from "../hooks/alertReloadPage";
 
 const MarkdownEditor = () => {
   const {
@@ -50,6 +51,8 @@ const MarkdownEditor = () => {
   } = useMarkdownEditor();
 
   const fileTree = organizeFiles(files);
+
+  alertReloadPage();
 
   return (
     <div className="flex h-dvh w-screen overflow-hidden">
