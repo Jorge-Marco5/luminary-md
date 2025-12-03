@@ -21,9 +21,14 @@ export const useMarkdownEditor = () => {
     type: string;
   } | null>(null);
 
-  // Ensure global dark mode is off (cleanup stale state)
+  // aplicar el tema por defecto del sistema si no se ha seleccionado y guardado en localStorage
   useEffect(() => {
-    document.documentElement.classList.remove("dark");
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      setDarkMode(savedTheme === "dark");
+    } else {
+      setDarkMode(window.matchMedia("(prefers-color-scheme: dark)").matches);
+    }
   }, []);
 
   // Helper to scan and update everything
@@ -263,6 +268,31 @@ export const useMarkdownEditor = () => {
   };
 
   const insertMarkdown = (before: string, after = "", placeholder = "") => {
+    if (monacoInstance) {
+      const selection = monacoInstance.getSelection();
+      const model = monacoInstance.getModel();
+      const text = model.getValueInRange(selection);
+
+      const textToInsert = text || placeholder;
+      const newText = before + textToInsert + after;
+
+      monacoInstance.executeEdits("toolbar", [
+        {
+          range: selection,
+          text: newText,
+          forceMoveMarkers: true,
+        },
+      ]);
+
+      // Restore focus and selection
+      monacoInstance.focus();
+      // Calculate new cursor position (simplified)
+      // For more complex selection logic, we might need more math,
+      // but usually placing cursor at end or selecting the inserted text is fine.
+      // Here we just let Monaco handle it or could refine it.
+      return;
+    }
+
     let textarea = document.getElementById("editor") as HTMLTextAreaElement;
     // Check if desktop editor is hidden or missing, try mobile
     if (!textarea || textarea.offsetParent === null) {
@@ -329,14 +359,28 @@ export const useMarkdownEditor = () => {
     }
   };
 
-  const handleEditorScroll = (e: React.UIEvent<HTMLElement>) => {
+  const [monacoInstance, setMonacoInstance] = useState<any>(null);
+
+  const handleEditorScroll = (arg: React.UIEvent<HTMLElement> | number) => {
     if (isScrolling.current) return;
     isScrolling.current = true;
     const preview = document.getElementById("preview");
     if (preview) {
-      const percent =
-        e.currentTarget.scrollTop /
-        (e.currentTarget.scrollHeight - e.currentTarget.clientHeight);
+      let percent = 0;
+      if (typeof arg === "number") {
+        // Monaco scroll
+        if (monacoInstance) {
+          const scrollHeight = monacoInstance.getScrollHeight();
+          const clientHeight = monacoInstance.getLayoutInfo().height;
+          percent = arg / (scrollHeight - clientHeight);
+        }
+      } else {
+        // Native scroll
+        percent =
+          arg.currentTarget.scrollTop /
+          (arg.currentTarget.scrollHeight - arg.currentTarget.clientHeight);
+      }
+
       preview.scrollTop =
         percent * (preview.scrollHeight - preview.clientHeight);
     }
@@ -349,18 +393,24 @@ export const useMarkdownEditor = () => {
     if (isScrolling.current) return;
     isScrolling.current = true;
 
-    // Try desktop container first
-    let editor = document.getElementById("editor-scroll-container");
-    if (!editor || editor.offsetParent === null) {
-      editor = document.getElementById("editor-scroll-container-mobile");
+    const percent =
+      e.currentTarget.scrollTop /
+      (e.currentTarget.scrollHeight - e.currentTarget.clientHeight);
+
+    // Sync Monaco
+    if (monacoInstance) {
+      const scrollHeight = monacoInstance.getScrollHeight();
+      const clientHeight = monacoInstance.getLayoutInfo().height;
+      monacoInstance.setScrollTop(percent * (scrollHeight - clientHeight));
     }
 
-    if (editor) {
-      const percent =
-        e.currentTarget.scrollTop /
-        (e.currentTarget.scrollHeight - e.currentTarget.clientHeight);
-      editor.scrollTop = percent * (editor.scrollHeight - editor.clientHeight);
+    // Sync Mobile
+    const mobileEditor = document.getElementById("editor-mobile");
+    if (mobileEditor) {
+      mobileEditor.scrollTop =
+        percent * (mobileEditor.scrollHeight - mobileEditor.clientHeight);
     }
+
     setTimeout(() => {
       isScrolling.current = false;
     }, 50);
@@ -421,5 +471,6 @@ export const useMarkdownEditor = () => {
     handlePreviewScroll,
     organizeFiles,
     toggleFolder,
+    setMonacoInstance,
   };
 };

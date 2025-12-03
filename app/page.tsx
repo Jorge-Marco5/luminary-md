@@ -19,7 +19,14 @@ import Sidebar from "../components/Sidebar";
 import EditorToolbar from "../components/EditorToolbar";
 import MarkdownPreview from "../components/MarkdownPreview";
 import { alertReloadPage } from "../hooks/alertReloadPage";
-import Editor from "../components/Editor";
+import dynamic from "next/dynamic";
+
+const MonacoEditor = dynamic(() => import("../components/MonacoEditor"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-full w-full bg-gray-50 dark:bg-neutral-900 animate-pulse" />
+  ),
+});
 
 const MarkdownEditor = () => {
   const {
@@ -49,6 +56,7 @@ const MarkdownEditor = () => {
     organizeFiles,
     toggleFolder,
     setSelectedFolderPath,
+    setMonacoInstance,
   } = useMarkdownEditor();
 
   const fileTree = organizeFiles(files);
@@ -127,7 +135,7 @@ const MarkdownEditor = () => {
               className="p-2 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 rounded"
               title={darkMode ? "Modo claro" : "Modo oscuro"}
             >
-              {darkMode ? <Moon size={20} /> : <Sun size={20} />}
+              {darkMode ? <Sun size={20} /> : <Moon size={20} />}
             </button>
             <button
               onClick={saveFile}
@@ -156,26 +164,24 @@ const MarkdownEditor = () => {
                   <Drawer.Title className="hidden">Editar</Drawer.Title>
                   <div className="p-4 bg-white dark:bg-neutral-900 rounded-t-[10px] flex-1 flex flex-col">
                     <div className="mx-auto w-12 h-1.5 shrink-0 rounded-full bg-gray-300 dark:bg-neutral-700 mb-8" />
-                    <div className="flex-1 flex flex-col min-h-0">
+                    <div
+                      className="flex-1 flex flex-col min-h-0"
+                      data-vaul-no-drag
+                    >
                       <div className="flex items-center gap-2 p-2 border-b border-gray-200 dark:border-neutral-700 overflow-x-auto mb-2">
                         <EditorToolbar onInsertMarkdown={insertMarkdown} />
                       </div>
-                      <div
-                        id="editor-scroll-container-mobile"
-                        className="flex-1 overflow-auto bg-white dark:bg-neutral-950"
+                      <textarea
+                        id="editor-mobile"
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
                         onScroll={handleEditorScroll}
-                      >
-                        <Editor
-                          value={content}
-                          onValueChange={setContent}
-                          textareaId="editor-mobile"
-                          className="min-h-full"
-                          placeholder="Selecciona un archivo o carga una carpeta..."
-                          style={{
-                            fontSize: `${previewFontSize}px`,
-                          }}
-                        />
-                      </div>
+                        className="flex-1 p-4 font-mono text-sm resize-none focus:outline-none bg-white dark:bg-neutral-950 text-gray-900 dark:text-gray-100 overflow-auto"
+                        placeholder="Selecciona un archivo o carga una carpeta..."
+                        style={{
+                          fontSize: `${previewFontSize}px`,
+                        }}
+                      />
                     </div>
                   </div>
                 </Drawer.Content>
@@ -198,20 +204,13 @@ const MarkdownEditor = () => {
                 <EditorToolbar onInsertMarkdown={insertMarkdown} />
               </div>
             </div>
-            <div
-              id="editor-scroll-container"
-              className="flex-1 overflow-auto bg-white dark:bg-neutral-950"
-              onScroll={handleEditorScroll}
-            >
-              <Editor
+            <div className="flex-1 overflow-hidden bg-white dark:bg-neutral-950">
+              <MonacoEditor
                 value={content}
-                onValueChange={setContent}
-                textareaId="editor"
-                className="min-h-full"
-                placeholder="Selecciona un archivo o carga una carpeta..."
-                style={{
-                  fontSize: `${previewFontSize}px`,
-                }}
+                onChange={setContent}
+                theme={darkMode ? "dark" : "light"}
+                onScroll={handleEditorScroll}
+                onMount={setMonacoInstance}
               />
             </div>
           </div>

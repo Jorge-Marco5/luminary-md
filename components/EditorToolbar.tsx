@@ -10,6 +10,7 @@ import {
   Quote,
   Table,
   CornerDownLeft,
+  Indent,
 } from "lucide-react";
 
 interface EditorToolbarProps {
@@ -29,6 +30,14 @@ const EditorToolbar: React.FC<EditorToolbarProps> = ({ onInsertMarkdown }) => {
         title="Nuevo parrafo"
       >
         <CornerDownLeft size={20} />
+      </button>
+      {/* sangría */}
+      <button
+        onClick={() => onInsertMarkdown("\t\t")}
+        className="p-2 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 rounded shrink-0"
+        title="Sangría"
+      >
+        <Indent size={20} />
       </button>
       <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1 shrink-0" />
       <select
