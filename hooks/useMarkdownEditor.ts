@@ -263,7 +263,17 @@ export const useMarkdownEditor = () => {
   };
 
   const insertMarkdown = (before: string, after = "", placeholder = "") => {
-    const textarea = document.getElementById("editor") as HTMLTextAreaElement;
+    let textarea = document.getElementById("editor") as HTMLTextAreaElement;
+    // Check if desktop editor is hidden or missing, try mobile
+    if (!textarea || textarea.offsetParent === null) {
+      const mobileTextarea = document.getElementById(
+        "editor-mobile"
+      ) as HTMLTextAreaElement;
+      if (mobileTextarea) {
+        textarea = mobileTextarea;
+      }
+    }
+
     if (!textarea) return;
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
@@ -319,7 +329,7 @@ export const useMarkdownEditor = () => {
     }
   };
 
-  const handleEditorScroll = (e: React.UIEvent<HTMLTextAreaElement>) => {
+  const handleEditorScroll = (e: React.UIEvent<HTMLElement>) => {
     if (isScrolling.current) return;
     isScrolling.current = true;
     const preview = document.getElementById("preview");
@@ -338,7 +348,13 @@ export const useMarkdownEditor = () => {
   const handlePreviewScroll = (e: React.UIEvent<HTMLDivElement>) => {
     if (isScrolling.current) return;
     isScrolling.current = true;
-    const editor = document.getElementById("editor");
+
+    // Try desktop container first
+    let editor = document.getElementById("editor-scroll-container");
+    if (!editor || editor.offsetParent === null) {
+      editor = document.getElementById("editor-scroll-container-mobile");
+    }
+
     if (editor) {
       const percent =
         e.currentTarget.scrollTop /

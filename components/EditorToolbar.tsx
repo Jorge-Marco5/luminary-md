@@ -9,6 +9,7 @@ import {
   Code,
   Quote,
   Table,
+  CornerDownLeft,
 } from "lucide-react";
 
 interface EditorToolbarProps {
@@ -22,6 +23,14 @@ interface EditorToolbarProps {
 const EditorToolbar: React.FC<EditorToolbarProps> = ({ onInsertMarkdown }) => {
   return (
     <div className="flex items-center gap-1 p-2 min-w-max">
+      <button
+        onClick={() => onInsertMarkdown("\n\n", "", "")}
+        className="p-2 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 rounded shrink-0"
+        title="Nuevo parrafo"
+      >
+        <CornerDownLeft size={20} />
+      </button>
+      <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1 shrink-0" />
       <select
         onChange={(e) => {
           if (e.target.value) {

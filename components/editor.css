@@ -1,0 +1,91 @@
+/* Base styles */
+.prism-editor {
+  font-family: "Euclid Circular A", monospace;
+  font-size: 20px;
+  line-height: 1.5;
+  color: rgb(223, 223, 223);
+}
+
+.prism-editor textarea {
+  outline: none !important;
+}
+
+/* Purple & White Theme Colors */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #8a2be2; /* Blue Violet (darker purple for comments) */
+}
+
+.token.punctuation {
+  color: #f8f8f2; /* White (foreground) */
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: #a020f0; /* Purple (accent) */
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: #e0b0ff; /* Light purple */
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: #bd93f9; /* Medium purple */
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: #f8f8f2; /* White (for keywords) */
+}
+
+.token.function,
+.token.class-name {
+  color: #e0b0ff; /* Light purple */
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: #a020f0; /* Purple (accent) */
+}
+
+/* Markdown Specifics */
+.token.title {
+  color: #8a2be2; /* White */
+}
+
+.token.list {
+  font-weight: bold;
+  color: #e0b0ff; /* Light purple */
+}
+
+.token.hr {
+  color: #8a2be2; /* Blue Violet */
+}
+
+.token.blockquote {
+  color: #8a2be2; /* Blue Violet */
+  border-left-color: #a020f0; /* Purple */
+}
+
+.token.code {
+  color: #f8f8f2; /* White */
+  background-color: #4a2d6b; /* Darker purple background for code blocks */
+}
