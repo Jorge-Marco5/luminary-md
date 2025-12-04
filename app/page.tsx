@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Menu,
   X,
@@ -10,6 +10,7 @@ import {
   ZoomOut,
   Edit3,
   Hash,
+  Command,
 } from "lucide-react";
 import "github-markdown-css/github-markdown.css";
 import { Drawer } from "vaul";
@@ -21,6 +22,8 @@ import MarkdownPreview from "../components/MarkdownPreview";
 import { alertReloadPage } from "../hooks/alertReloadPage";
 import dynamic from "next/dynamic";
 import ModalViewImage from "../components/modalViewImage";
+import ModalCommands from "../components/modalCommands";
+import ModalAboutMe from "../components/modalAboutMe";
 
 const MonacoEditor = dynamic(() => import("../components/MonacoEditor"), {
   ssr: false,
@@ -66,6 +69,94 @@ const MarkdownEditor = () => {
 
   alertReloadPage();
 
+  // ctr + s para guardar
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "s" && event.ctrlKey) {
+        event.preventDefault();
+        saveFile();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [saveFile]);
+
+  const [modalCommandsOpen, setModalCommandsOpen] = useState(false);
+
+  // ctr + ? para abrir el modal de comandos
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "?" && event.ctrlKey) {
+        event.preventDefault();
+        setModalCommandsOpen(true);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [modalCommandsOpen]);
+
+  // ctr + o para abrir un archivo
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "o" && event.ctrlKey && !event.shiftKey) {
+        event.preventDefault();
+        handleOpenFile();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleOpenFile]);
+
+  // ctr + shift + o para abrir una carpeta
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "O" && event.ctrlKey && event.shiftKey) {
+        event.preventDefault();
+        handleOpenFolder();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleOpenFolder]);
+
+  // ctr + n para crear un nuevo archivo
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "n" && event.ctrlKey && !event.shiftKey) {
+        event.preventDefault();
+        createNewFile();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [createNewFile]);
+
+  // ctr + shift + n para crear una nueva carpeta
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "N" && event.ctrlKey && event.shiftKey) {
+        event.preventDefault();
+        createNewFolder();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [createNewFolder]);
+
+  const [modalAboutMeOpen, setModalAboutMeOpen] = useState(false);
+
   return (
     <div className="flex h-dvh w-screen overflow-hidden">
       {alert && (
@@ -82,6 +173,12 @@ const MarkdownEditor = () => {
         imageUrl={viewingImage?.url || ""}
         altText={viewingImage?.alt}
       />
+
+      <ModalAboutMe
+        isOpen={modalAboutMeOpen}
+        onClose={() => setModalAboutMeOpen(false)}
+      />
+
       {/* Mobile Backdrop */}
       {sidebarOpen && (
         <div
@@ -104,6 +201,7 @@ const MarkdownEditor = () => {
         onToggleFolder={toggleFolder}
         onSelectFolder={setSelectedFolderPath}
         onLoadFile={loadFile}
+        onOpenAbout={() => setModalAboutMeOpen(true)}
       />
 
       {/* Main Content */}
@@ -118,6 +216,18 @@ const MarkdownEditor = () => {
           </button>
 
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => setModalCommandsOpen(true)}
+              className="p-2 bg-neutral-700 hover:bg-neutral-600 dark:text-neutral-200 rounded"
+              title="Ayuda"
+            >
+              <Command size={20} />
+            </button>
+            <ModalCommands
+              isOpen={modalCommandsOpen}
+              onClose={() => setModalCommandsOpen(false)}
+            />
+            <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1" />
             <button
               onClick={() =>
                 setPreviewFontSize((prev) => Math.max(10, prev - 1))
@@ -149,11 +259,11 @@ const MarkdownEditor = () => {
             </button>
             <button
               onClick={saveFile}
-              className="flex items-center gap-2 p-2 md:px-4 md:py-2 bg-violet-700 text-white rounded hover:bg-violet-800 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="p-2 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 bg-violet-600 text-white rounded flex items-center gap-2"
               title="Guardar"
             >
-              <Save size={18} />
-              <span className="hidden md:inline">Guardar</span>
+              <Save size={20} />
+              Guardar
             </button>
           </div>
         </div>

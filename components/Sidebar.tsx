@@ -24,6 +24,7 @@ interface SidebarProps {
   onToggleFolder: (path: string) => void;
   onSelectFolder: (path: string) => void;
   onLoadFile: (file: any) => void;
+  onOpenAbout: () => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -39,6 +40,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   onToggleFolder,
   onSelectFolder,
   onLoadFile,
+  onOpenAbout,
 }) => {
   const [isSupported, setIsSupported] = useState(true);
 
@@ -140,6 +142,16 @@ const Sidebar: React.FC<SidebarProps> = ({
           onSelectFolder={onSelectFolder}
           onLoadFile={onLoadFile}
         />
+      </div>
+      <div className="p-2 border-t border-gray-200 dark:border-neutral-700">
+        <button
+          onClick={onOpenAbout}
+          className="flex items-center justify-center w-full px-4 py-2 text-violet-500 dark:text-gray-200 rounded-md hover:bg-gray-200 dark:hover:bg-violet-600 transition-colors font-medium text-sm"
+          title="Acerca del Desarrollador"
+        >
+          <Info size={20} />
+          <span className="ml-2">Acerca de</span>
+        </button>
       </div>
     </div>
   );
