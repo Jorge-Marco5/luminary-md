@@ -58,7 +58,7 @@ const MonacoEditor: React.FC<MonacoEditorProps> = ({
         scrollBeyondLastLine: false,
         smoothScrolling: true,
         padding: { top: 16, bottom: 16 },
-        lineNumbers: "off",
+        lineNumbers: "on",
         glyphMargin: false,
         folding: false,
         // Undocumented but useful for "clean" look

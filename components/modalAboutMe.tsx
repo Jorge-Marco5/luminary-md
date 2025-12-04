@@ -14,7 +14,7 @@ const ModalAboutMe: React.FC<ModalAboutMeProps> = ({ isOpen, onClose }) => {
       onClick={onClose} // Close modal when clicking on the backdrop
     >
       <div
-        className="relative max-h-screen w-full max-w-lg p-8 bg-neutral-900 rounded-xl shadow-2xl border border-gray-200 transform transition-all duration-300 ease-out scale-100 opacity-100 animate-modal-open"
+        className="relative max-h-screen w-full max-w-lg p-8 bg-neutral-900 rounded-xl shadow-2xl border border-neutral-700 transform transition-all duration-300 ease-out scale-100 opacity-100 animate-modal-open"
         role="dialog"
         aria-modal="true"
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
