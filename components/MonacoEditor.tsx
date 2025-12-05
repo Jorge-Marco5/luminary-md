@@ -54,7 +54,7 @@ const MonacoEditor: React.FC<MonacoEditorProps> = ({
         fontFamily: '"Euclid Circular A", monospace',
         fontSize: 16,
         wordWrap: "on",
-        minimap: { enabled: true },
+        minimap: { enabled: false },
         scrollBeyondLastLine: false,
         smoothScrolling: true,
         padding: { top: 16, bottom: 16 },
