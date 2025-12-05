@@ -287,6 +287,10 @@ export const useMarkdownEditor = () => {
   };
 
   const insertMarkdown = (before: string, after = "", placeholder = "") => {
+    const selection = window.getSelection();
+    if (selection) {
+      selection.collapseToEnd();
+    }
     // Check for mobile editor first
     const mobileTextarea = document.getElementById(
       "editor-mobile"
@@ -296,6 +300,7 @@ export const useMarkdownEditor = () => {
     if (mobileTextarea && mobileTextarea.offsetParent !== null) {
       const start = mobileTextarea.selectionStart;
       const end = mobileTextarea.selectionEnd;
+      const scrollTop = mobileTextarea.scrollTop; // Guardar posición del scroll
       const selectedText = content.substring(start, end) || placeholder;
       const newText =
         content.substring(0, start) +
@@ -311,6 +316,7 @@ export const useMarkdownEditor = () => {
           start + before.length,
           start + before.length + selectedText.length
         );
+        mobileTextarea.scrollTop = scrollTop; // Restaurar posición del scroll
       }, 0);
       return;
     }
@@ -350,6 +356,7 @@ export const useMarkdownEditor = () => {
     if (!textarea) return;
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
+    const scrollTop = textarea.scrollTop; // Guardar posición del scroll
     const selectedText = content.substring(start, end) || placeholder;
     const newText =
       content.substring(0, start) +
@@ -365,6 +372,7 @@ export const useMarkdownEditor = () => {
         start + before.length,
         start + before.length + selectedText.length
       );
+      textarea.scrollTop = scrollTop; // Restaurar posición del scroll
     }, 0);
   };
 

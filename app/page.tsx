@@ -11,6 +11,12 @@ import {
   Edit3,
   Hash,
   Command,
+  SquareArrowOutUpRight,
+  ChevronDown,
+  Wrench,
+  FileText,
+  Eye,
+  HelpCircle,
 } from "lucide-react";
 import "github-markdown-css/github-markdown.css";
 import { Drawer } from "vaul";
@@ -24,6 +30,7 @@ import dynamic from "next/dynamic";
 import ModalViewImage from "../components/modalViewImage";
 import ModalCommands from "../components/modalCommands";
 import ModalAboutMe from "../components/modalAboutMe";
+import { exportData } from "@/hooks/exportData";
 
 const MonacoEditor = dynamic(() => import("../components/MonacoEditor"), {
   ssr: false,
@@ -157,6 +164,9 @@ const MarkdownEditor = () => {
 
   const [modalAboutMeOpen, setModalAboutMeOpen] = useState(false);
 
+  const onOpenAbout = () => {
+    setModalAboutMeOpen(true);
+  };
   return (
     <div className="flex h-dvh w-screen overflow-hidden">
       {alert && (
@@ -177,6 +187,11 @@ const MarkdownEditor = () => {
       <ModalAboutMe
         isOpen={modalAboutMeOpen}
         onClose={() => setModalAboutMeOpen(false)}
+      />
+
+      <ModalCommands
+        isOpen={modalCommandsOpen}
+        onClose={() => setModalCommandsOpen(false)}
       />
 
       {/* Mobile Backdrop */}
@@ -215,57 +230,150 @@ const MarkdownEditor = () => {
             {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setModalCommandsOpen(true)}
-              className="p-2 bg-neutral-700 hover:bg-neutral-600 dark:text-neutral-200 rounded"
-              title="Ayuda"
-            >
-              <Command size={20} />
-            </button>
-            <ModalCommands
-              isOpen={modalCommandsOpen}
-              onClose={() => setModalCommandsOpen(false)}
-            />
-            <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1" />
-            <button
-              onClick={() =>
-                setPreviewFontSize((prev) => Math.max(10, prev - 1))
-              }
-              className="p-2 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 rounded"
-              title="Disminuir tamaño de fuente"
-            >
-              <ZoomOut size={20} />
-            </button>
-            <span className="text-sm font-medium text-gray-600 dark:text-neutral-200 w-8 text-center">
-              {previewFontSize}
-            </span>
-            <button
-              onClick={() =>
-                setPreviewFontSize((prev) => Math.min(32, prev + 1))
-              }
-              className="p-2 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 rounded"
-              title="Aumentar tamaño de fuente"
-            >
-              <ZoomIn size={20} />
-            </button>
-            <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1" />
+          <nav className="pl-2 flex items-center gap-2 overflow-x-auto whitespace-nowrap py-1">
+            {/* File Actions Group */}
+            <div className="relative shrink-0">
+              <select
+                value={""}
+                onChange={(e) => {
+                  if (e.target.value === "save") {
+                    saveFile();
+                  } else if (e.target.value === "open-file") {
+                    handleOpenFile();
+                  } else if (e.target.value === "open-folder") {
+                    handleOpenFolder();
+                  } else if (e.target.value === "new-file") {
+                    createNewFile();
+                  } else if (e.target.value === "new-folder") {
+                    createNewFolder();
+                  }
+                  e.target.value = "";
+                }}
+                name="file-actions"
+                id="file-actions-select"
+                className="max-w-[150px] appearance-none p-2 bg-gray-50 dark:bg-neutral-800 hover:bg-gray-100 dark:hover:bg-neutral-700 dark:text-gray-200 rounded pr-6 cursor-pointer text-sm border border-gray-200 dark:border-neutral-700"
+              >
+                <option className="text-[13px]" value="" disabled hidden>
+                  Archivo
+                </option>
+                <option className="text-[13px]" value="save">
+                  Guardar (Ctrl+S)
+                </option>
+                <option className="text-[13px]" value="open-file">
+                  Abrir archivo (Ctrl+O)
+                </option>
+                <option className="text-[13px]" value="open-folder">
+                  Abrir carpeta (Ctrl+Shift+O)
+                </option>
+                <option className="text-[13px]" value="new-file">
+                  Nuevo archivo (Ctrl+N)
+                </option>
+                <option className="text-[13px]" value="new-folder">
+                  Nueva carpeta (Ctrl+Shift+N)
+                </option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-200">
+                <FileText size={20} />
+              </div>
+            </div>
+
+            {/* Export Dropdown */}
+            <div className="relative shrink-0 ">
+              <select
+                onChange={(e) => {
+                  exportData(content, e.target.value, setAlert);
+                  e.target.value = "";
+                }}
+                name="export"
+                id="export-select"
+                className="max-w-[150px] appearance-none p-2 bg-gray-50 dark:bg-neutral-800 hover:bg-gray-100 dark:hover:bg-neutral-700 dark:text-gray-200 rounded pr-6 cursor-pointer text-sm border border-gray-200 dark:border-neutral-700"
+              >
+                <option className=" text-[13px]" value="" disabled hidden>
+                  Exportar
+                </option>
+                <option className="text-[13px]" value="markdown">
+                  Markdown
+                </option>
+                <option className="text-[13px]" value="html">
+                  HTML
+                </option>
+                <option className="text-[13px]" value="pdf">
+                  PDF
+                </option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-200">
+                <SquareArrowOutUpRight size={20} />
+              </div>
+            </div>
+
+            <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1 shrink-0" />
+
             <button
               onClick={() => setDarkMode(!darkMode)}
-              className="p-2 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 rounded"
+              className="p-2 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-neutral-700 rounded shrink-0"
               title={darkMode ? "Modo claro" : "Modo oscuro"}
             >
               {darkMode ? <Sun size={20} /> : <Moon size={20} />}
             </button>
-            <button
-              onClick={saveFile}
-              className="p-2 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 bg-violet-600 text-white rounded flex items-center gap-2"
-              title="Guardar"
-            >
-              <Save size={20} />
-              Guardar
-            </button>
-          </div>
+
+            {/* Font Size Controls Group (kept as buttons for quick access) */}
+            <div className="flex items-center rounded border border-gray-200 dark:border-neutral-700 shrink-0">
+              <button
+                onClick={() =>
+                  setPreviewFontSize((prev) => Math.max(10, prev - 1))
+                }
+                className="p-2 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-neutral-700 rounded-l"
+                title="Disminuir tamaño de fuente"
+              >
+                <ZoomOut size={20} />
+              </button>
+              <span className="text-[12px] font-medium text-gray-600 dark:text-neutral-200 w-8 text-center px-1">
+                {previewFontSize}
+              </span>
+              <button
+                onClick={() =>
+                  setPreviewFontSize((prev) => Math.min(32, prev + 1))
+                }
+                className="p-2 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-neutral-700 rounded-r"
+                title="Aumentar tamaño de fuente"
+              >
+                <ZoomIn size={20} />
+              </button>
+            </div>
+
+            <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1 shrink-0" />
+
+            {/* Help/About Group */}
+            <div className="relative shrink-0">
+              <select
+                value={""}
+                onChange={(e) => {
+                  if (e.target.value === "commands") {
+                    setModalCommandsOpen(true);
+                  } else if (e.target.value === "about") {
+                    onOpenAbout();
+                  }
+                  e.target.value = "";
+                }}
+                name="help-about"
+                id="help-about-select"
+                className="appearance-none p-2 bg-gray-50 dark:bg-neutral-800 hover:bg-gray-100 dark:hover:bg-neutral-700 dark:text-gray-200 rounded pr-6 cursor-pointer text-sm border border-gray-200 dark:border-neutral-700"
+              >
+                <option className="text-[13px]" value="" disabled hidden>
+                  Ayuda
+                </option>
+                <option className="text-[13px]" value="commands">
+                  Comandos (Ctrl+?)
+                </option>
+                <option className="text-[13px]" value="about">
+                  Acerca de
+                </option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-200">
+                <HelpCircle size={20} />
+              </div>
+            </div>
+          </nav>
         </div>
 
         {/* Editor and Preview */}
