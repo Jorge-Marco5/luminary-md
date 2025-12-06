@@ -21,13 +21,38 @@ export const useMarkdownEditor = () => {
     type: string;
   } | null>(null);
 
-  // aplicar el tema por defecto del sistema si no se ha seleccionado y guardado en localStorage
+  const firstRender = useRef(true);
+
+  // Efecto para sincronizar el tema con DOM y localStorage
   useEffect(() => {
+    const root = document.documentElement;
+    if (darkMode) {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+
+    // Evitar sobrescribir localStorage en la primera carga (cuando el estado es false por defecto)
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+
+    localStorage.setItem("theme", darkMode ? "dark" : "light");
+  }, [darkMode]);
+
+  // Efecto inicial para cargar preferencia
+  useEffect(() => {
+    // Recuperar pero NO escribir (ya lo maneja el otro efecto, pero protegido por firstRender)
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme) {
       setDarkMode(savedTheme === "dark");
+    } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      setDarkMode(true);
     } else {
-      setDarkMode(window.matchMedia("(prefers-color-scheme: dark)").matches);
+      // Explicitly handle "no preference saved" case if needed,
+      // but default is false so light mode is default.
+      // If we wanted system dark, we handled it above.
     }
   }, []);
 
