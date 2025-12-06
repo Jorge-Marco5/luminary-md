@@ -4,8 +4,11 @@ import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkGfm from "remark-gfm";
 import remarkHtml from "remark-html";
+import { useMarkdownEditor } from "../hooks/useMarkdownEditor";
 
 type AlertSetter = (alert: { message: string; type: string } | null) => void;
+
+const { setDarkMode } = useMarkdownEditor();
 
 export const exportData = async (
   content: string,
@@ -110,13 +113,18 @@ const exportHtml = async (content: string, setAlert?: AlertSetter) => {
 };
 
 const exportToPdf = async (markdown: string, setAlert?: AlertSetter) => {
+  setDarkMode(false);
   if (setAlert)
     setAlert({ message: "Abriendo diálogo de impresión...", type: "info" });
 
-  // Give the UI a moment to show the alert before printing
   setTimeout(() => {
     window.print();
     if (setAlert)
       setAlert({ message: "PDF listo para guardar", type: "success" });
   }, 100);
+  // obtener tema actual y restaurarlo
+  const theme = localStorage.getItem("theme");
+  if (theme) {
+    localStorage.setItem("theme", theme);
+  }
 };
