@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import chromium from "@sparticuz/chromium";
+import chromium from "@sparticuz/chromium-min";
 import puppeteerCore from "puppeteer-core";
 
 // Allow 60 seconds for PDF generation
@@ -19,7 +19,9 @@ export async function POST(req: NextRequest) {
       browser = await puppeteerCore.launch({
         args: (chromium as any).args,
         defaultViewport: (chromium as any).defaultViewport,
-        executablePath: await chromium.executablePath(),
+        executablePath: await chromium.executablePath(
+          "https://github.com/Sparticuz/chromium/releases/download/v131.0.1/chromium-v131.0.1-pack.tar"
+        ),
         headless: (chromium as any).headless,
       });
     } else {
