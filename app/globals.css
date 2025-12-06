@@ -197,3 +197,39 @@ textarea {
   color: #e6edf3;
   border-color: #30363d;
 }
+@media print {
+  /* Hide everything by default */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Only show the markdown preview content */
+  #preview,
+  #preview * {
+    visibility: visible;
+  }
+
+  /* Reset layout for print */
+  #preview {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 20px !important; /* Ensure some padding context */
+    overflow: visible !important;
+    background-color: white !important;
+    color: black !important;
+    height: auto !important;
+  }
+
+  /* Force light theme colors for printing */
+  :root {
+    color-scheme: light;
+  }
+
+  /* Hide scrollbars */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}

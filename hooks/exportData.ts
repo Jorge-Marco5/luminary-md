@@ -110,45 +110,13 @@ const exportHtml = async (content: string, setAlert?: AlertSetter) => {
 };
 
 const exportToPdf = async (markdown: string, setAlert?: AlertSetter) => {
-  if (setAlert) setAlert({ message: "Generando PDF...", type: "info" });
-  try {
-    const htmlContent = await generateHtmlContent(markdown);
-    const response = await fetch("/api/pdf", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ html: htmlContent }),
-    });
+  if (setAlert)
+    setAlert({ message: "Abriendo diálogo de impresión...", type: "info" });
 
-    if (!response.ok) {
-      if (setAlert)
-        setAlert({ message: "Error al generar el PDF", type: "error" });
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(
-        errorData.error || errorData.details || "Error al generar el PDF"
-      );
-    }
-
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
-
-    // Crear enlace de descarga
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "export.pdf";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    window.URL.revokeObjectURL(url);
+  // Give the UI a moment to show the alert before printing
+  setTimeout(() => {
+    window.print();
     if (setAlert)
-      setAlert({ message: "PDF generado exitosamente", type: "success" });
-  } catch (error) {
-    console.error("Error exportando PDF:", error);
-    if (setAlert) {
-      setAlert({
-        message:
-          error instanceof Error ? error.message : "Error al generar el PDF",
-        type: "error",
-      });
-    }
-  }
+      setAlert({ message: "PDF listo para guardar", type: "success" });
+  }, 100);
 };
