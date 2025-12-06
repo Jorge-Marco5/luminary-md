@@ -112,10 +112,11 @@ const exportHtml = async (content: string, setAlert?: AlertSetter) => {
 const exportToPdf = async (markdown: string, setAlert?: AlertSetter) => {
   if (setAlert) setAlert({ message: "Generando PDF...", type: "info" });
   try {
-    const response = await fetch("/api/export-pdf", {
+    const htmlContent = await generateHtmlContent(markdown);
+    const response = await fetch("/api/pdf", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ markdown }),
+      body: JSON.stringify({ html: htmlContent }),
     });
 
     if (!response.ok) {
