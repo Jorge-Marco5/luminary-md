@@ -1,214 +1,301 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+@custom-variant dark (&:is(.dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
 }
 
 .dark {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.439 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
 }
 
-.dark-print {
-  --background: #ffffff !important;
-  --foreground: #000000 !important;
+@theme inline {
+  /* optional: --font-sans, --font-serif, --font-mono if they are applied in the layout.tsx */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: "Euclid Circular A", sans-serif;
-
-  /* Estilizar barra de scroll */
-  scrollbar-width: thin;
-  scrollbar-color: #1a1a1a #000000;
-  overflow-x: hidden;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
 
-textarea {
-  font-family: "Euclid Circular A", sans-serif;
-  font-size: 1.1rem;
-  word-spacing: 1px;
-  line-height: 1.5;
-}
-
-.markdown-body {
+*{
   box-sizing: border-box;
-  min-width: 0;
-  max-width: 100%;
-  white-space: normal;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  background-color: transparent !important;
+  scrollbar-color: var(--color-sidebar-accent) var(--color-sidebar);
+  scrollbar-width: thin;
+    font-family: "Euclid Circular A", sans-serif;
+
 }
 
-.dark .markdown-body {
+/* Markdown Preview Overrides */
+/* Markdown Preview Overrides */
+.markdown-body {
   background-color: transparent !important;
+  /* Base color for light mode (fallback) */
+  color: var(--foreground) !important;
+}
+
+/* Explicit Light Mode Override */
+html:not(.dark) .markdown-body {
+  color: var(--foreground) !important;
+  --color-canvas-default: transparent;
+  --color-canvas-subtle: var(--muted);
+  --color-border-default: var(--border);
+  --color-border-muted: var(--border);
+  --color-fg-default: var(--foreground);
+}
+
+/* Explicit Dark Mode Override */
+html.dark .markdown-body {
   color-scheme: dark;
+  color: var(--foreground) !important;
+  --color-canvas-default: transparent;
+  --color-border-default: var(--border);
+  --color-border-muted: var(--border);
+  --color-fg-default: var(--foreground);
+}
+
+/* Fix Headings/Text in Light Mode */
+html:not(.dark) .markdown-body h1,
+html:not(.dark) .markdown-body h2,
+html:not(.dark) .markdown-body h3,
+html:not(.dark) .markdown-body h4,
+html:not(.dark) .markdown-body h5,
+html:not(.dark) .markdown-body h6,
+html:not(.dark) .markdown-body p,
+html:not(.dark) .markdown-body li,
+html:not(.dark) .markdown-body td,
+html:not(.dark) .markdown-body th {
+  color: var(--foreground) !important;
+}
+
+/* Code Blocks Dark Mode */
+html:not(.dark) .markdown-body pre {
+  background-color: var(--muted);
   color: var(--foreground);
 }
 
-.dark .markdown-body a {
-  color: #4493f8;
+html:not(.dark) .markdown-body code {
+  background-color: var(--muted);
 }
 
-.dark .markdown-body h1,
-.dark .markdown-body h2,
-.dark .markdown-body h3,
-.dark .markdown-body h4,
-.dark .markdown-body h5,
-.dark .markdown-body h6 {
-  color: #f0f6fc;
-  border-bottom-color: #21262d;
+/* Tables light mode*/
+html:not(.dark) .markdown-body table tr {
+  background-color: var(--card);
+  border-top-color: var(--border);
 }
 
-.dark .markdown-body blockquote {
-  color: #8b949e;
-  border-left-color: #30363d;
+html:not(.dark) .markdown-body table tr:nth-child(2n) {
+  background-color: var(--muted);
 }
 
-.dark .markdown-body table tr {
-  background-color: #0d1117;
-  border-top-color: #21262d;
-}
-
-.dark .markdown-body table tr:nth-child(2n) {
-  background-color: #161b22;
-}
-
-.dark .markdown-body table th,
-.dark .markdown-body table td {
-  border-color: #30363d;
-}
-
-.markdown-body h1,
-.markdown-body h2,
-.markdown-body h3,
-.markdown-body h4,
-.markdown-body h5,
-.markdown-body h6 {
+html:not(.dark) .markdown-body table th,
+html:not(.dark) .markdown-body table td {
+  border-color: var(--border);
   color: var(--foreground);
-  overflow-wrap: break-word;
-  word-break: break-word;
-  max-width: 100%;
 }
 
-.markdown-body p,
-.markdown-body li,
-.markdown-body td {
-  color: var(--foreground);
-  overflow-wrap: break-word;
-  word-break: break-word;
-  max-width: 100%;
+html:not(.dark) .markdown-body table th {
+  background-color: var(--muted);
 }
 
-.markdown-body ul {
+/* Lists - Light Mode */
+html:not(.dark) .markdown-body ul,
+html:not(.dark) .markdown-body ol,
+html:not(.dark) .markdown-body li {
+  color: var(--foreground) !important;
+}
+
+html:not(.dark) .markdown-body ul {
   list-style-type: disc;
 }
 
-.markdown-body ol {
+html:not(.dark) .markdown-body ol {
   list-style-type: decimal;
 }
 
-.markdown-body a {
-  color: #0969da;
-  text-decoration: none;
-  overflow-wrap: break-word;
-  word-break: break-all;
-  display: inline-block;
-  max-width: 100%;
+/* Links */
+html.dark .markdown-body a {
+  color: var(--sidebar-primary); 
 }
 
-.markdown-body a:hover {
-  text-decoration: underline;
+/* Headings Dark Mode */
+html.dark .markdown-body h1,
+html.dark .markdown-body h2,
+html.dark .markdown-body h3,
+html.dark .markdown-body h4,
+html.dark .markdown-body h5,
+html.dark .markdown-body h6 {
+  color: var(--foreground);
+  border-bottom-color: var(--border);
 }
 
-.markdown-body pre {
-  background-color: #f6f8fa;
-  color: #1f2328;
-  padding: 16px;
-  border-radius: 6px;
-  max-width: 100%;
-  overflow-x: auto;
+/* Blockquotes Dark Mode */
+html.dark .markdown-body blockquote {
+  color: var(--muted-foreground);
+  border-left-color: var(--border);
 }
 
-.dark .markdown-body pre {
-  background-color: #161b22;
-  color: #e6edf3;
+/* Tables Dark Mode */
+html.dark .markdown-body table tr {
+  background-color: var(--card);
+  border-top-color: var(--border);
 }
 
-.markdown-body pre code {
-  display: inline-block;
-  min-width: 100%;
-  background-color: transparent;
-  padding: 0;
+html.dark .markdown-body table tr:nth-child(2n) {
+  background-color: var(--muted);
 }
 
-.markdown-body blockquote {
-  padding: 0 1em;
-  color: #656d76;
-  border-left: 0.25em solid #d0d7de;
-  margin-bottom: 16px;
+html.dark .markdown-body table th,
+html.dark .markdown-body table td {
+  border-color: var(--border);
+  color: var(--foreground);
 }
 
-.dark .markdown-body blockquote {
-  color: #8b949e;
-  border-left-color: #30363d;
+html.dark .markdown-body table th {
+  background-color: var(--muted);
 }
 
-.markdown-body table tr {
-  background-color: #ffffff;
-  border-top: 1px solid #d0d7de;
+/* Code Blocks Dark Mode */
+html.dark .markdown-body pre {
+  background-color: var(--muted);
+  color: var(--foreground);
 }
 
-.markdown-body table tr:nth-child(2n) {
-  background-color: #f6f8fa;
+html.dark .markdown-body code {
+  background-color: var(--muted);
 }
 
-.markdown-body table th {
-  background-color: #a1a1a1;
-  color: #1f2328;
-  border: 1px solid #d0d7de;
-  padding: 6px 13px;
+/* Lists - Dark Mode */
+html.dark .markdown-body ul,
+html.dark .markdown-body ol,
+html.dark .markdown-body li {
+  color: var(--foreground) !important;
 }
 
-.markdown-body table td {
-  background-color: #ffffff;
-  color: #1f2328;
-  border: 1px solid #d0d7de;
-  padding: 6px 13px;
+html.dark .markdown-body ul {
+  list-style-type: disc;
 }
 
-/* Dark mode overrides for tables */
-.dark .markdown-body table tr {
-  background-color: #0d1117;
-  border-top-color: #21262d;
+html.dark .markdown-body ol {
+  list-style-type: decimal;
 }
 
-.dark .markdown-body table tr:nth-child(2n) {
-  background-color: #161b22;
-}
-
-.dark .markdown-body table th {
-  background-color: #161b22;
-  color: #efefef;
-  border-color: #30363d;
-}
-
-.dark .markdown-body table td {
-  background-color: #0d1117;
-  color: #e6edf3;
-  border-color: #30363d;
-}
 @media print {
-  /* Force light theme variables */
-  :root,
-  .dark {
-    --background: #ffffff !important;
-    --foreground: #000000 !important;
-    color-scheme: dark-print !important;
+  /* Reset page layout */
+  body, html, #preview, .markdown-body {
+    visibility: visible !important;
+    height: auto !important;
+    width: 100% !important;
+    overflow: visible !important;
+    background-color: white !important;
+    color: black !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   /* Hide everything by default */
@@ -216,64 +303,42 @@ textarea {
     visibility: hidden;
   }
 
-  /* Only show the markdown preview content */
-  #preview,
-  #preview * {
+  /* Make preview and its children visible */
+  #preview, #preview * {
     visibility: visible;
   }
 
-  /* Reset layout for print */
+  /* Position preview at top left */
   #preview {
     position: absolute;
     left: 0;
     top: 0;
-    width: 100%;
-    margin: 0;
-    padding: 0 !important;
-    overflow: visible !important;
-    background-color: white !important;
-    color: black !important;
-    height: auto !important;
-    display: block !important;
+    margin: 20px !important; /* Optional margin for paper */
   }
 
-  /* Aggressive Overrides for Dark Mode Styles */
-  body,
-  .dark body,
+  /* Ensure text color is black for print */
   .markdown-body,
-  .dark .markdown-body {
-    background-color: white !important;
-    color: black !important;
-  }
-
-  /* Override specific element colors */
-  .dark .markdown-body h1,
-  .dark .markdown-body h2,
-  .dark .markdown-body h3,
-  .dark .markdown-body h4,
-  .dark .markdown-body h5,
-  .dark .markdown-body h6,
-  .dark .markdown-body p,
-  .dark .markdown-body li,
-  .dark .markdown-body td,
-  .dark .markdown-body th,
-  .dark .markdown-body blockquote,
-  .dark .markdown-body strong,
-  .dark .markdown-body em,
-  .dark .markdown-body code,
-  .dark .markdown-body pre {
+  .markdown-body * {
     color: black !important;
     background-color: transparent !important;
-    border-color: #d0d7de !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
   }
 
-  /* Ensure links are readable (blue or black) */
-  .dark .markdown-body a {
-    color: #0969da !important;
+  /* Clean up links for print */
+  .markdown-body a {
+    text-decoration: underline;
+    color: black !important;
   }
-
-  /* Hide scrollbars */
-  ::-webkit-scrollbar {
-    display: none;
+  
+  /* Borders for tables/blockquotes */
+  .markdown-body table,
+  .markdown-body th,
+  .markdown-body td {
+    border-color: #ddd !important;
+  }
+  
+  .markdown-body blockquote {
+    border-left-color: #ddd !important;
   }
 }

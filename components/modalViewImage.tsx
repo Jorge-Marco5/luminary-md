@@ -17,11 +17,11 @@ const ModalImage: React.FC<ModalImageProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/75"
       onClick={onClose}
     >
       <div
-        className="relative max-w-3xl max-h-[90vh] bg-neutral-800 rounded-lg shadow-lg overflow-hidden"
+        className="relative max-w-3xl max-h-[90vh] bg-background rounded-lg shadow-lg overflow-hidden border border-border"
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal content
       >
         <div className="flex justify-between pr-2 pl-2 items-center">
@@ -31,7 +31,7 @@ const ModalImage: React.FC<ModalImageProps> = ({
             <div className="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/50" />
           </div>
           <button
-            className="text-gray-200 hover:text-gray-400 text-2xl font-bold"
+            className="text-muted-foreground hover:text-foreground text-2xl font-bold"
             onClick={onClose}
           >
             &times;

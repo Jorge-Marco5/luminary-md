@@ -7,10 +7,10 @@ const KBD = ({ keys }: { keys: string[] }) => {
       {keys.map((key, index) => (
         <span
           key={index}
-          className="inline-flex items-center justify-center rounded border border-b-2 border-neutral-700 bg-neutral-800 px-2 py-1 text-xs font-medium text-neutral-200 shadow-sm"
+          className="inline-flex items-center justify-center rounded border border-b-2 border-border bg-muted px-2 py-1 text-xs font-medium text-foreground shadow-sm"
         >
           {key === "?" ? (
-            <Command size={16} className="text-neutral-200" />
+            <Command size={16} className="text-foreground" />
           ) : (
             key
           )}

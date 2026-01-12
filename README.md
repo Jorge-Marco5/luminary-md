@@ -1,5 +1,6 @@
 # Luminary MD
 
+<<<<<<< HEAD
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Next.js](https://img.shields.io/badge/Next.js-16-black)
 ![React](https://img.shields.io/badge/React-19-blue)
@@ -65,3 +66,14 @@ Sigue estos pasos para ejecutar el proyecto en tu máquina local.
 - `pnpm build`: Construye la aplicación para producción.
 - `pnpm start`: Inicia el servidor de producción.
 - `pnpm lint`: Ejecuta el linter para asegurar la calidad del código.
+=======
+Luminary es una herramienta de edicion de archivos markdown locales.
+
+Caracteristicas principales:
+
+- Abrir carpetas con multiples archivos markdown y archivos de imagen.
+- Crear mas archivos y carpetas dentro del proyecto.
+- Vista previa de archivo.
+- Listado y visualizacion de las imagenes en el proyecto para facil uso en los archivos.
+- Exportacion de el archivo markdown a formato html y pdf.
+>>>>>>> c1fb829 (fix: update colors from themes dark and light)

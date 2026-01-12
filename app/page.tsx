@@ -35,7 +35,7 @@ import { exportData } from "@/hooks/exportData";
 const MonacoEditor = dynamic(() => import("../components/MonacoEditor"), {
   ssr: false,
   loading: () => (
-    <div className="h-full w-full bg-gray-50 dark:bg-neutral-950 animate-pulse" />
+    <div className="h-full w-full bg-muted dark:bg-muted animate-pulse" />
   ),
 });
 
@@ -220,12 +220,12 @@ const MarkdownEditor = () => {
       />
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col min-h-0 min-w-0 bg-white dark:bg-neutral-800">
+      <div className="flex-1 flex flex-col min-h-0 min-w-0 bg-background dark:bg-background">
         {/* Header */}
-        <div className="flex items-center justify-between p-2 border-b border-gray-200 dark:border-neutral-950">
+        <div className="flex items-center justify-between p-2 border-b border-border dark:border-border print:hidden">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-2 hover:bg-gray-100 dark:text-gray-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 rounded"
+            className="p-2 hover:bg-accent dark:text-foreground dark:bg-muted dark:hover:bg-accent rounded"
           >
             {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -251,7 +251,7 @@ const MarkdownEditor = () => {
                 }}
                 name="file-actions"
                 id="file-actions-select"
-                className="max-w-[150px] appearance-none p-2 bg-gray-50 dark:bg-neutral-800 hover:bg-gray-100 dark:hover:bg-neutral-700 dark:text-gray-200 rounded pr-6 cursor-pointer text-sm border border-gray-200 dark:border-neutral-700"
+                className="max-w-[150px] appearance-none p-2 bg-muted dark:bg-muted hover:bg-accent dark:hover:bg-accent dark:text-foreground rounded pr-6 cursor-pointer text-sm border border-border dark:border-border"
               >
                 <option className="text-[13px]" value="" disabled hidden>
                   Archivo
@@ -272,7 +272,7 @@ const MarkdownEditor = () => {
                   Nueva carpeta (Ctrl+Shift+N)
                 </option>
               </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-200">
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-muted-foreground dark:text-muted-foreground">
                 <FileText size={20} />
               </div>
             </div>
@@ -286,9 +286,9 @@ const MarkdownEditor = () => {
                 }}
                 name="export"
                 id="export-select"
-                className="max-w-[150px] appearance-none p-2 bg-gray-50 dark:bg-neutral-800 hover:bg-gray-100 dark:hover:bg-neutral-700 dark:text-gray-200 rounded pr-6 cursor-pointer text-sm border border-gray-200 dark:border-neutral-700"
+                className="max-w-[150px] appearance-none p-2 bg-muted dark:bg-muted hover:bg-accent dark:hover:bg-accent dark:text-foreground rounded pr-6 cursor-pointer text-sm border border-border dark:border-border"
               >
-                <option className=" text-[13px]" value="" disabled hidden>
+                <option className=" text-[13px]" value="" hidden>
                   Exportar
                 </option>
                 <option className="text-[13px]" value="markdown">
@@ -301,47 +301,47 @@ const MarkdownEditor = () => {
                   PDF
                 </option>
               </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-200">
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-muted-foreground dark:text-muted-foreground">
                 <SquareArrowOutUpRight size={20} />
               </div>
             </div>
 
-            <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1 shrink-0" />
+            <div className="w-px h-6 bg-border dark:bg-border mx-1 shrink-0" />
 
             <button
               onClick={() => setDarkMode(!darkMode)}
-              className="p-2 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-neutral-700 rounded shrink-0"
+              className="p-2 hover:bg-accent dark:text-foreground dark:hover:bg-accent rounded shrink-0"
               title={darkMode ? "Modo claro" : "Modo oscuro"}
             >
               {darkMode ? <Sun size={20} /> : <Moon size={20} />}
             </button>
 
             {/* Font Size Controls Group (kept as buttons for quick access) */}
-            <div className="flex items-center rounded border border-gray-200 dark:border-neutral-700 shrink-0">
+            <div className="flex items-center rounded border border-border dark:border-border shrink-0">
               <button
                 onClick={() =>
                   setPreviewFontSize((prev) => Math.max(10, prev - 1))
                 }
-                className="p-2 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-neutral-700 rounded-l"
+                className="p-2 hover:bg-accent dark:text-foreground dark:hover:bg-accent rounded-l"
                 title="Disminuir tamaño de fuente"
               >
                 <ZoomOut size={20} />
               </button>
-              <span className="text-[12px] font-medium text-gray-600 dark:text-neutral-200 w-8 text-center px-1">
+              <span className="text-[12px] font-medium text-muted-foreground dark:text-muted-foreground w-8 text-center px-1">
                 {previewFontSize}
               </span>
               <button
                 onClick={() =>
                   setPreviewFontSize((prev) => Math.min(32, prev + 1))
                 }
-                className="p-2 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-neutral-700 rounded-r"
+                className="p-2 hover:bg-accent dark:text-foreground dark:hover:bg-accent rounded-r"
                 title="Aumentar tamaño de fuente"
               >
                 <ZoomIn size={20} />
               </button>
             </div>
 
-            <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1 shrink-0" />
+            <div className="w-px h-6 bg-border dark:bg-border mx-1 shrink-0" />
 
             {/* Help/About Group */}
             <div className="relative shrink-0">
@@ -357,7 +357,7 @@ const MarkdownEditor = () => {
                 }}
                 name="help-about"
                 id="help-about-select"
-                className="appearance-none p-2 bg-gray-50 dark:bg-neutral-800 hover:bg-gray-100 dark:hover:bg-neutral-700 dark:text-gray-200 rounded pr-6 cursor-pointer text-sm border border-gray-200 dark:border-neutral-700"
+                className="appearance-none p-2 bg-muted dark:bg-muted hover:bg-accent dark:hover:bg-accent dark:text-foreground rounded pr-6 cursor-pointer text-sm border border-border dark:border-border"
               >
                 <option className="text-[13px]" value="" disabled hidden>
                   Ayuda
@@ -369,7 +369,7 @@ const MarkdownEditor = () => {
                   Acerca de
                 </option>
               </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-200">
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-muted-foreground dark:text-muted-foreground">
                 <HelpCircle size={20} />
               </div>
             </div>
@@ -379,24 +379,24 @@ const MarkdownEditor = () => {
         {/* Editor and Preview */}
         <div className="flex-1 flex flex-col md:flex-row overflow-hidden min-w-0 w-full">
           {/* Mobile Edit Button (Floating) */}
-          <div className="md:hidden absolute bottom-6 right-6 z-10">
+          <div className="md:hidden absolute bottom-6 right-6 z-10 print:hidden">
             <Drawer.Root>
               <Drawer.Trigger asChild>
-                <button className="bg-violet-600 text-white p-4 rounded-full shadow-lg hover:bg-violet-700 transition-colors">
+                <button className="bg-violet-600 text-white p-4 rounded-full shadow-lg hover:bg-violet-700 ">
                   <Edit3 size={24} />
                 </button>
               </Drawer.Trigger>
               <Drawer.Portal>
                 <Drawer.Overlay className="fixed inset-0 bg-black" />
-                <Drawer.Content className="bg-white dark:bg-neutral-950 flex flex-col rounded-t-[10px] h-[96%] mt-24 fixed bottom-0 left-0 right-0 outline-none z-50">
+                <Drawer.Content className="bg-background dark:bg-background flex flex-col rounded-t-[10px] h-[96%] mt-24 fixed bottom-0 left-0 right-0 outline-none z-50">
                   <Drawer.Title className="hidden">Editar</Drawer.Title>
-                  <div className="p-4 bg-white dark:bg-neutral-900 rounded-t-[10px] flex-1 flex flex-col">
-                    <div className="mx-auto w-12 h-1.5 shrink-0 rounded-full bg-gray-300 dark:bg-neutral-700 mb-8" />
+                  <div className="p-4 bg-background dark:bg-background rounded-t-[10px] flex-1 flex flex-col">
+                    <div className="mx-auto w-12 h-1.5 shrink-0 rounded-full bg-border dark:bg-border mb-8" />
                     <div
                       className="flex-1 flex flex-col min-h-0"
                       data-vaul-no-drag
                     >
-                      <div className="flex items-center gap-2 p-2 border-b border-gray-200 dark:border-neutral-700 overflow-x-auto mb-2">
+                      <div className="flex items-center gap-2 p-2 border-b border-border dark:border-border overflow-x-auto mb-2">
                         <EditorToolbar onInsertMarkdown={insertMarkdown} />
                       </div>
                       <textarea
@@ -404,7 +404,7 @@ const MarkdownEditor = () => {
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
                         onScroll={handleEditorScroll}
-                        className="flex-1 p-4 font-mono text-sm resize-none focus:outline-none bg-white dark:bg-neutral-950 text-gray-900 dark:text-gray-100 overflow-auto"
+                        className="flex-1 p-4 font-mono text-sm resize-none focus:outline-none bg-background dark:bg-background text-foreground dark:text-foreground overflow-auto"
                         placeholder="Selecciona un archivo o carga una carpeta..."
                         style={{
                           fontSize: `${previewFontSize}px`,
@@ -417,22 +417,21 @@ const MarkdownEditor = () => {
             </Drawer.Root>
           </div>
 
-          {/* Desktop Editor */}
-          <div className="hidden md:flex flex-1 flex-col border-r border-gray-200 dark:border-neutral-700 min-w-0 overflow-hidden">
-            <div className="p-2 bg-gray-50 dark:bg-neutral-900 border-b border-gray-200 dark:border-neutral-700">
-              <div className="flex items-center gap-2">
-                <Hash size={20} className="text-gray-500 dark:text-gray-400" />
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300 truncate">
+          <div className="hidden md:flex flex-1 flex-col border-r border-border dark:border-border min-w-0 overflow-hidden print:hidden">
+            <div className="bg-muted dark:bg-muted border-b border-border dark:border-border">
+              <div className="flex items-center p-2 bg-gray-50 dark:bg-neutral-900 border-b border-gray-200 dark:border-neutral-700">
+                <Hash size={20} className="text-gray-700 dark:text-gray-300" />
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   {currentFile?.name || "Sin archivo seleccionado"}
                 </span>
               </div>
             </div>
-            <div className="bg-gray-50 dark:bg-neutral-900 border-b border-gray-200 dark:border-neutral-700">
+            <div className="bg-muted dark:bg-muted border-b border-border dark:border-border">
               <div className="overflow-x-auto">
                 <EditorToolbar onInsertMarkdown={insertMarkdown} />
               </div>
             </div>
-            <div className="flex-1 overflow-hidden bg-white dark:bg-neutral-950">
+            <div className="flex-1 overflow-hidden bg-background dark:bg-background">
               <MonacoEditor
                 value={content}
                 onChange={setContent}

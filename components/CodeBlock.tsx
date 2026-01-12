@@ -28,7 +28,7 @@ const CodeBlock = ({ children, ...props }: any) => {
       <div className="flex items-center justify-between rounded-t-lg px-2 bg-gray-100/50 dark:bg-gray-900/50 border-b border-gray-200 dark:border-neutral-700">
         <button
           onClick={handleCopy}
-          className="p-1.5 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors"
+          className="rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors"
           title="Copiar código"
         >
           {copied ? <Check size={14} /> : <Copy size={14} />}

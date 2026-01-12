@@ -22,7 +22,7 @@ const MarkdownPreview: React.FC<MarkdownPreviewProps> = ({
 }) => {
   return (
     <div className={`flex-1 flex flex-col min-w-0 overflow-hidden`}>
-      <div className="p-2 bg-gray-50 dark:bg-neutral-900 border-b border-gray-200 dark:border-neutral-700">
+      <div className="p-2 bg-gray-50 dark:bg-neutral-900 border-b border-gray-200 dark:border-neutral-700 print:hidden">
         <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
           Vista previa
         </span>
@@ -30,14 +30,14 @@ const MarkdownPreview: React.FC<MarkdownPreviewProps> = ({
       <div
         id="preview"
         onScroll={onScroll}
-        className={`flex-1 overflow-y-auto overflow-x-hidden p-4 ${
-          darkMode
-            ? "bg-neutral-950 text-neutral-100 dark"
-            : "bg-neutral-50 text-gray-900"
-        }`}
+        className={`flex-1 overflow-y-auto overflow-x-hidden p-4`}
       >
         <div
-          className="markdown-body max-w-full cursor-pointer"
+          className={`markdown-body max-w-full cursor-pointer ${
+            darkMode
+              ? "bg-neutral-950 text-neutral-100 border-neutral-700"
+              : "bg-neutral-50 text-neutral-900 border-neutral-200"
+          }`}
           style={{
             fontSize: `${previewFontSize}px`,
           }}

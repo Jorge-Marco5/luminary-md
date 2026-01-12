@@ -10,18 +10,18 @@ const ModalAboutMe: React.FC<ModalAboutMeProps> = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
       onClick={onClose} // Close modal when clicking on the backdrop
     >
       <div
-        className="relative max-h-screen w-full max-w-lg p-8 bg-neutral-900 rounded-xl shadow-2xl border border-neutral-700 transform transition-all duration-300 ease-out scale-100 opacity-100 animate-modal-open"
+        className="relative max-h-screen w-full max-w-lg p-8 bg-background rounded-xl shadow-2xl border border-border transform transition-all duration-300 ease-out scale-100 opacity-100 animate-modal-open"
         role="dialog"
         aria-modal="true"
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-neutral-500 hover:text-neutral-700 transition-colors duration-200"
+          className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors duration-200"
           aria-label="Cerrar"
         >
           <svg
@@ -41,33 +41,33 @@ const ModalAboutMe: React.FC<ModalAboutMeProps> = ({ isOpen, onClose }) => {
         </button>
         <div className="flex justify-center space-x-4 items-center">
           <img src="hash.svg" alt="logo de Luminary" className="w-15 h-15" />
-          <p className="text-neutral-50 text-center text-4xl font-bold">
+          <p className="text-foreground text-center text-4xl font-bold">
             Luminary
           </p>
         </div>
         <div className="max-h-[calc(100vh-20rem)] overflow-y-auto">
-          <p className="text-neutral-50 mb-4">
+          <p className="text-muted-foreground mb-4">
             Luminary es un editor de documentos Markdown en línea donde puedes
             crear y editar documentos markdown, Puedes editar documentos
             existentes desde tus carpetas locales, así como crear nuevos. Ofrece
             soporte para la visualización de imágenes dentro de tu proyecto.
           </p>
-          <p className="text-neutral-50 mb-4">
+          <p className="text-muted-foreground mb-4">
             Todos los archivos son editables de forma local en tu navegador, lo
             que significa que no se recopila tu información personal ni de los
             archivos que editas.
           </p>
         </div>
-        <h3 className="mb-4 text-xl font-bold text-neutral-50 text-center">
+        <h3 className="mb-4 text-xl font-bold text-foreground text-center">
           Desarrollado por:
         </h3>
-        <p className="text-neutral-50 text-center mb-4">Jorge Marcos</p>
+        <p className="text-muted-foreground text-center mb-4">Jorge Marcos</p>
         <div className="flex justify-center space-x-4">
           <a
             href="https://github.com/Jorge-Marco5"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 px-6 py-3 bg-neutral-800 text-white font-semibold rounded-lg shadow-md hover:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-700 focus:ring-opacity-75 transition-all duration-200"
+            className="flex items-center justify-center gap-2 px-6 py-3 bg-secondary text-secondary-foreground font-semibold rounded-lg shadow-md hover:bg-secondary/80 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-opacity-75 transition-all duration-200"
           >
             <svg className="w-6 h-6" viewBox="0 0 16 16" fill="currentColor">
               <path

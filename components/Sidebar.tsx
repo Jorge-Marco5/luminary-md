@@ -55,23 +55,24 @@ const Sidebar: React.FC<SidebarProps> = ({
     <div
       className={`
         fixed inset-y-0 left-0 z-40 w-64
-        bg-gray-50 dark:bg-neutral-900 border-r border-gray-200 dark:border-neutral-700
-        flex flex-col transition-transform duration-300 ease-in-out overflow-hidden
+        bg-sidebar dark:bg-sidebar border-r border-sidebar-border dark:border-sidebar-border
+        flex flex-col overflow-hidden
         ${sidebarOpen ? "translate-x-0 shadow-xl" : "-translate-x-full"}
-        md:relative md:translate-x-0 md:shadow-none md:transition-all md:duration-300
+        md:relative md:translate-x-0 md:shadow-none
         ${sidebarOpen ? "md:w-64" : "md:w-0"}
+        print:hidden
       `}
       style={{ fontSize: "14px" }}
     >
       <div
         onClick={() => window.location.reload()}
-        className="flex items-center gap-2 p-4 border-t border-b border-gray-200 dark:border-neutral-700 bg-gray-50 dark:bg-neutral-900"
+        className="flex items-center gap-2 p-4 border-t border-b border-sidebar-border dark:border-sidebar-border bg-sidebar dark:bg-sidebar"
       >
         <Hash
           size={20}
           className="text-violet-600 dark:text-violet-600 hover:text-violet-500 dark:hover:text-violet-500"
         />
-        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+        <span className="text-sm font-medium text-sidebar-foreground dark:text-sidebar-foreground">
           Luminary
         </span>
       </div>
@@ -100,31 +101,31 @@ const Sidebar: React.FC<SidebarProps> = ({
           </div>
         </div>
       ) : (
-        <div className="flex gap-2 p-4 border-b border-gray-200 dark:border-neutral-700">
+        <div className="flex gap-2 p-4 border-b border-sidebar-border dark:border-sidebar-border">
           <button
             onClick={onOpenFolder}
-            className="flex items-center justify-center w-full px-4 py-2 text-violet-500 dark:text-gray-200 rounded-md hover:bg-gray-200 dark:hover:bg-violet-600 transition-colors font-medium text-sm"
+            className="flex items-center justify-center w-full px-4 py-2 text-violet-500 dark:text-gray-200 rounded-md hover:bg-sidebar-accent dark:hover:bg-sidebar-accent transition-colors font-medium text-sm"
             title="Abrir carpeta"
           >
             <FolderOpen size={20} />
           </button>
           <button
             onClick={onOpenFile}
-            className="flex items-center justify-center w-full px-4 py-2 text-violet-500 dark:text-gray-200 rounded-md hover:bg-gray-200 dark:hover:bg-violet-600 transition-colors font-medium text-sm"
+            className="flex items-center justify-center w-full px-4 py-2 text-violet-500 dark:text-gray-200 rounded-md hover:bg-sidebar-accent dark:hover:bg-sidebar-accent transition-colors font-medium text-sm"
             title="Abrir archivo"
           >
             <FileUp size={20} />
           </button>
           <button
             onClick={onCreateFolder}
-            className="flex items-center justify-center w-full px-4 py-2  text-violet-500 dark:text-gray-200 rounded-md hover:bg-gray-200 dark:hover:bg-violet-600 transition-colors font-medium text-sm"
+            className="flex items-center justify-center w-full px-4 py-2  text-violet-500 dark:text-gray-200 rounded-md hover:bg-sidebar-accent dark:hover:bg-sidebar-accent transition-colors font-medium text-sm"
             title="Nuevo directorio"
           >
             <FolderPlus size={20} />
           </button>
           <button
             onClick={onCreateFile}
-            className="flex items-center justify-center w-full px-4 py-2 text-violet-500 dark:text-gray-200 rounded-md hover:bg-gray-200 dark:hover:bg-violet-600 transition-colors font-medium text-sm"
+            className="flex items-center justify-center w-full px-4 py-2 text-violet-500 dark:text-gray-200 rounded-md hover:bg-sidebar-accent dark:hover:bg-sidebar-accent transition-colors font-medium text-sm"
             title="Nuevo archivo"
           >
             <FilePlusCorner size={20} />
@@ -132,7 +133,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         </div>
       )}
 
-      <div className="flex-1 p-2 overflow-y-auto text-gray-700 dark:text-gray-200">
+      <div className="flex-1 p-2 overflow-y-auto text-sidebar-foreground dark:text-sidebar-foreground">
         <FileTree
           tree={fileTree}
           expandedFolders={expandedFolders}
@@ -143,10 +144,10 @@ const Sidebar: React.FC<SidebarProps> = ({
           onLoadFile={onLoadFile}
         />
       </div>
-      <div className="p-2 border-t border-gray-200 dark:border-neutral-700">
+      <div className="p-2 border-t border-sidebar-border dark:border-sidebar-border">
         <button
           onClick={onOpenAbout}
-          className="flex items-center justify-center w-full px-4 py-2 text-violet-500 dark:text-gray-200 rounded-md hover:bg-gray-200 dark:hover:bg-violet-600 transition-colors font-medium text-sm"
+          className="flex items-center justify-center w-full px-4 py-2 text-violet-500 dark:text-gray-200 rounded-md hover:bg-sidebar-accent dark:hover:bg-sidebar-accent transition-colors font-medium text-sm"
           title="Acerca del Desarrollador"
         >
           <Info size={20} />
