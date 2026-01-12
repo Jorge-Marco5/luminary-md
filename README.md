@@ -2,8 +2,11 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 6036967 (actualizacion del readme)
+=======
+>>>>>>> c47876b (actualizacion del readme.md y correcciones en la vista de los colores de temas)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Next.js](https://img.shields.io/badge/Next.js-16-black)
 ![React](https://img.shields.io/badge/React-19-blue)
@@ -72,18 +75,25 @@ Sigue estos pasos para ejecutar el proyecto en tu máquina local.
 - `pnpm lint`: Ejecuta el linter para asegurar la calidad del código.
 =======
 Luminary es una herramienta de edicion de archivos markdown locales.
+<<<<<<< HEAD
 =======
 >>>>>>> 6036967 (actualizacion del readme)
 
 **Luminary MD** es una herramienta moderna y local para la edición de archivos Markdown, construida con las últimas tecnologías web. Diseñada para ofrecer una experiencia de escritura fluida y eficiente, permite gestionar proyectos completos directamente desde tu navegador utilizando la File System Access API.
 
 <<<<<<< HEAD
+=======
+
+Caracteristicas principales:
+
+>>>>>>> c47876b (actualizacion del readme.md y correcciones en la vista de los colores de temas)
 - Abrir carpetas con multiples archivos markdown y archivos de imagen.
 - Crear mas archivos y carpetas dentro del proyecto.
 - Vista previa de archivo.
 - Listado y visualizacion de las imagenes en el proyecto para facil uso en los archivos.
 - Exportacion de el archivo markdown a formato html y pdf.
 >>>>>>> c1fb829 (fix: update colors from themes dark and light)
+<<<<<<< HEAD
 =======
 ## ✨ Características Principales
 
@@ -144,3 +154,5 @@ Sigue estos pasos para ejecutar el proyecto en tu máquina local.
 - `pnpm start`: Inicia el servidor de producción.
 - `pnpm lint`: Ejecuta el linter para asegurar la calidad del código.
 >>>>>>> 6036967 (actualizacion del readme)
+=======
+>>>>>>> c47876b (actualizacion del readme.md y correcciones en la vista de los colores de temas)
