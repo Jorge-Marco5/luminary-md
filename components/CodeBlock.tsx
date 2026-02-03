@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Check, Copy } from "lucide-react";
 
-const CodeBlock = ({ children, ...props }: any) => {
+const CodeBlock = ({ children, ...props }: React.PropsWithChildren) => {
   const [copied, setCopied] = useState(false);
   const preRef = useRef<HTMLPreElement>(null);
 

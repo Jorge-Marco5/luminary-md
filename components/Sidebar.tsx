@@ -4,10 +4,8 @@ import {
   FolderOpen,
   FolderPlus,
   FilePlusCorner,
-  FileText,
   FileUp,
   Info,
-  Github,
 } from "lucide-react";
 import FileTree from "./FileTree";
 

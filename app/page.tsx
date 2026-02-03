@@ -3,19 +3,14 @@ import React, { useEffect, useState } from "react";
 import {
   Menu,
   X,
-  Save,
   Sun,
   Moon,
   ZoomIn,
   ZoomOut,
   Edit3,
   Hash,
-  Command,
   SquareArrowOutUpRight,
-  ChevronDown,
-  Wrench,
   FileText,
-  Eye,
   HelpCircle,
 } from "lucide-react";
 import "github-markdown-css/github-markdown.css";
