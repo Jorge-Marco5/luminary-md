@@ -118,16 +118,17 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
 
-*{
+* {
   box-sizing: border-box;
   scrollbar-color: var(--color-sidebar-accent) var(--color-sidebar);
   scrollbar-width: thin;
-    font-family: "Euclid Circular A", sans-serif;
+  font-family: "Euclid Circular A", sans-serif;
 
 }
 
@@ -220,7 +221,7 @@ html:not(.dark) .markdown-body ol {
 
 /* Links */
 html.dark .markdown-body a {
-  color: var(--sidebar-primary); 
+  color: var(--sidebar-primary);
 }
 
 /* Headings Dark Mode */
@@ -286,8 +287,12 @@ html.dark .markdown-body ol {
 }
 
 @media print {
+
   /* Reset page layout */
-  body, html, #preview, .markdown-body {
+  body,
+  html,
+  #preview,
+  .markdown-body {
     visibility: visible !important;
     height: auto !important;
     width: 100% !important;
@@ -304,7 +309,8 @@ html.dark .markdown-body ol {
   }
 
   /* Make preview and its children visible */
-  #preview, #preview * {
+  #preview,
+  #preview * {
     visibility: visible;
   }
 
@@ -313,7 +319,8 @@ html.dark .markdown-body ol {
     position: absolute;
     left: 0;
     top: 0;
-    margin: 20px !important; /* Optional margin for paper */
+    margin: 20px !important;
+    /* Optional margin for paper */
   }
 
   /* Ensure text color is black for print */
@@ -330,14 +337,14 @@ html.dark .markdown-body ol {
     text-decoration: underline;
     color: black !important;
   }
-  
+
   /* Borders for tables/blockquotes */
   .markdown-body table,
   .markdown-body th,
   .markdown-body td {
     border-color: #ddd !important;
   }
-  
+
   .markdown-body blockquote {
     border-left-color: #ddd !important;
   }

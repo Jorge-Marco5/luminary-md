@@ -1,6 +1,9 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import "katex/dist/katex.min.css";
 import CodeBlock from "./CodeBlock";
 
 interface MarkdownPreviewProps {
@@ -33,11 +36,10 @@ const MarkdownPreview: React.FC<MarkdownPreviewProps> = ({
         className={`flex-1 overflow-y-auto overflow-x-hidden p-4`}
       >
         <div
-          className={`markdown-body max-w-full cursor-pointer ${
-            darkMode
-              ? "bg-neutral-950 text-neutral-100 border-neutral-700"
-              : "bg-neutral-50 text-neutral-900 border-neutral-200"
-          }`}
+          className={`markdown-body max-w-full cursor-pointer ${darkMode
+            ? "bg-neutral-950 text-neutral-100 border-neutral-700"
+            : "bg-neutral-50 text-neutral-900 border-neutral-200"
+            }`}
           style={{
             fontSize: `${previewFontSize}px`,
           }}
@@ -48,7 +50,8 @@ const MarkdownPreview: React.FC<MarkdownPreviewProps> = ({
           }}
         >
           <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
+            remarkPlugins={[remarkGfm, remarkMath]}
+            rehypePlugins={[rehypeKatex]}
             components={{
               a: ({ node, ...props }) => (
                 <a
