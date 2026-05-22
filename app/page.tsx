@@ -86,6 +86,28 @@ const MarkdownEditor = () => {
   }, [saveFile]);
 
   const [modalCommandsOpen, setModalCommandsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    const isMobileViewport = mediaQuery.matches;
+
+    const timer = setTimeout(() => {
+      setMounted(true);
+      setIsMobile(isMobileViewport);
+    }, 0);
+
+    const handler = (e: MediaQueryListEvent) => {
+      setIsMobile(e.matches);
+    };
+
+    mediaQuery.addEventListener("change", handler);
+    return () => {
+      clearTimeout(timer);
+      mediaQuery.removeEventListener("change", handler);
+    };
+  }, []);
 
   // ctr + ? para abrir el modal de comandos
   useEffect(() => {
@@ -166,6 +188,9 @@ const MarkdownEditor = () => {
       }
     };
     document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
   }, [setViewingImage]);
 
 
@@ -409,17 +434,27 @@ const MarkdownEditor = () => {
                       <div className="flex items-center gap-2 p-2 border-b border-border dark:border-border overflow-x-auto mb-2">
                         <EditorToolbar onInsertMarkdown={insertMarkdown} />
                       </div>
-                      <textarea
-                        id="editor-mobile"
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                        onScroll={handleEditorScroll}
-                        className="flex-1 p-4 font-mono text-sm resize-none focus:outline-none bg-background dark:bg-background text-foreground dark:text-foreground overflow-auto"
-                        placeholder="Selecciona un archivo o carga una carpeta..."
-                        style={{
-                          fontSize: `${previewFontSize}px`,
-                        }}
-                      />
+                      {mounted && isMobile && (
+                        <div className="flex-1 min-h-0 bg-background dark:bg-background mt-4">
+                          <MonacoEditor
+                            value={content}
+                            onChange={setContent}
+                            theme={darkMode ? "dark" : "light"}
+                            onScroll={handleEditorScroll}
+                            onMount={(editor) => {
+                              setMonacoInstance(editor);
+                              // Optimize mobile keyboard settings to prevent cursor jumps
+                              const textarea = editor.getDomNode()?.querySelector("textarea");
+                              if (textarea) {
+                                textarea.setAttribute("autocorrect", "off");
+                                textarea.setAttribute("autocapitalize", "off");
+                                textarea.setAttribute("autocomplete", "off");
+                                textarea.setAttribute("spellcheck", "false");
+                              }
+                            }}
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </Drawer.Content>
@@ -442,13 +477,17 @@ const MarkdownEditor = () => {
               </div>
             </div>
             <div className="flex-1 overflow-hidden bg-background dark:bg-background">
-              <MonacoEditor
-                value={content}
-                onChange={setContent}
-                theme={darkMode ? "dark" : "light"}
-                onScroll={handleEditorScroll}
-                onMount={setMonacoInstance}
-              />
+              {!mounted ? (
+                <div className="h-full w-full bg-muted dark:bg-muted animate-pulse" />
+              ) : !isMobile ? (
+                <MonacoEditor
+                  value={content}
+                  onChange={setContent}
+                  theme={darkMode ? "dark" : "light"}
+                  onScroll={handleEditorScroll}
+                  onMount={setMonacoInstance}
+                />
+              ) : null}
             </div>
           </div>
 

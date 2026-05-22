@@ -312,35 +312,6 @@ export const useMarkdownEditor = () => {
     if (selection) {
       selection.collapseToEnd();
     }
-    // Check for mobile editor first
-    const mobileTextarea = document.getElementById(
-      "editor-mobile"
-    ) as HTMLTextAreaElement;
-
-    // If mobile textarea is visible, use it
-    if (mobileTextarea && mobileTextarea.offsetParent !== null) {
-      const start = mobileTextarea.selectionStart;
-      const end = mobileTextarea.selectionEnd;
-      const scrollTop = mobileTextarea.scrollTop; // Guardar posición del scroll
-      const selectedText = content.substring(start, end) || placeholder;
-      const newText =
-        content.substring(0, start) +
-        before +
-        selectedText +
-        after +
-        content.substring(end);
-      setContent(newText);
-
-      setTimeout(() => {
-        mobileTextarea.focus();
-        mobileTextarea.setSelectionRange(
-          start + before.length,
-          start + before.length + selectedText.length
-        );
-        mobileTextarea.scrollTop = scrollTop; // Restaurar posición del scroll
-      }, 0);
-      return;
-    }
 
     if (monacoInstance) {
       const selection = monacoInstance.getSelection();
@@ -365,8 +336,8 @@ export const useMarkdownEditor = () => {
       }
     }
 
+    // Fallback for native textarea (if any)
     let textarea = document.getElementById("editor") as HTMLTextAreaElement;
-    // Check if desktop editor is hidden or missing, try mobile
     if (!textarea || textarea.offsetParent === null) {
       const mobileTextarea = document.getElementById(
         "editor-mobile"
@@ -476,13 +447,6 @@ export const useMarkdownEditor = () => {
       const scrollHeight = monacoInstance.getScrollHeight();
       const clientHeight = monacoInstance.getLayoutInfo().height;
       monacoInstance.setScrollTop(percent * (scrollHeight - clientHeight));
-    }
-
-    // Sync Mobile
-    const mobileEditor = document.getElementById("editor-mobile");
-    if (mobileEditor) {
-      mobileEditor.scrollTop =
-        percent * (mobileEditor.scrollHeight - mobileEditor.clientHeight);
     }
 
     setTimeout(() => {
