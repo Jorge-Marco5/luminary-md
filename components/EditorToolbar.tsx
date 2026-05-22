@@ -11,6 +11,7 @@ import {
   Table,
   CornerDownLeft,
   Indent,
+  FunctionSquare,
 } from "lucide-react";
 
 interface EditorToolbarProps {
@@ -149,6 +150,13 @@ const EditorToolbar: React.FC<EditorToolbarProps> = ({ onInsertMarkdown }) => {
         title="Código"
       >
         <Code size={20} />
+      </button>
+      <button
+        onClick={() => onInsertMarkdown("$", "$", "math")}
+        className="p-2 hover:bg-accent dark:text-foreground dark:hover:bg-accent rounded shrink-0"
+        title="Matemática"
+      >
+        <FunctionSquare size={20} />
       </button>
       <button
         onClick={() => onInsertMarkdown("> ", "", "cita")}

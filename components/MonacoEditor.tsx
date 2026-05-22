@@ -51,7 +51,6 @@ const MonacoEditor: React.FC<MonacoEditorProps> = ({
       onChange={handleEditorChange}
       onMount={handleEditorDidMount}
       options={{
-        fontFamily: '"Euclid Circular A", monospace',
         fontSize: 16,
         wordWrap: "on",
         minimap: { enabled: false },

@@ -5,7 +5,7 @@
 
 :root {
   --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --foreground: oklch(0% 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
@@ -121,6 +121,7 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: "Euclid Circular A", sans-serif;
   }
 }
 
@@ -128,11 +129,8 @@
   box-sizing: border-box;
   scrollbar-color: var(--color-sidebar-accent) var(--color-sidebar);
   scrollbar-width: thin;
-  font-family: "Euclid Circular A", sans-serif;
-
 }
 
-/* Markdown Preview Overrides */
 /* Markdown Preview Overrides */
 .markdown-body {
   background-color: transparent !important;
@@ -171,7 +169,7 @@ html:not(.dark) .markdown-body p,
 html:not(.dark) .markdown-body li,
 html:not(.dark) .markdown-body td,
 html:not(.dark) .markdown-body th {
-  color: var(--foreground) !important;
+  color: var(--foreground);
 }
 
 /* Code Blocks Dark Mode */
@@ -237,7 +235,7 @@ html.dark .markdown-body h6 {
 
 /* Blockquotes Dark Mode */
 html.dark .markdown-body blockquote {
-  color: var(--muted-foreground);
+  color: var(--foreground);
   border-left-color: var(--border);
 }
 
@@ -275,7 +273,7 @@ html.dark .markdown-body code {
 html.dark .markdown-body ul,
 html.dark .markdown-body ol,
 html.dark .markdown-body li {
-  color: var(--foreground) !important;
+  color: var(--foreground);
 }
 
 html.dark .markdown-body ul {
@@ -288,39 +286,57 @@ html.dark .markdown-body ol {
 
 @media print {
 
-  /* Reset page layout */
-  body,
+  @page {
+    margin: 1.5cm;
+  }
+
+  /* Hide screen-only layouts */
+  header,
+  aside,
+  .print\:hidden,
+  #editor-container,
+  nav,
+  button {
+    display: none !important;
+  }
+
+  /* Reset layout structure for print */
   html,
-  #preview,
-  .markdown-body {
-    visibility: visible !important;
-    height: auto !important;
-    width: 100% !important;
-    overflow: visible !important;
+  body {
     background-color: white !important;
     color: black !important;
     margin: 0 !important;
     padding: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
   }
 
-  /* Hide everything by default */
-  body * {
-    visibility: hidden;
+  /* Flatten layout components */
+  main,
+  div {
+    display: block !important;
+    float: none !important;
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
   }
 
-  /* Make preview and its children visible */
+  /* Preview pane full width and natural height flow */
   #preview,
-  #preview * {
-    visibility: visible;
-  }
-
-  /* Position preview at top left */
-  #preview {
-    position: absolute;
-    left: 0;
-    top: 0;
-    margin: 20px !important;
-    /* Optional margin for paper */
+  .markdown-body {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
   }
 
   /* Ensure text color is black for print */
@@ -338,6 +354,13 @@ html.dark .markdown-body ol {
     color: black !important;
   }
 
+  /* Ensure code blocks and text wrap properly without overflow */
+  .markdown-body pre,
+  .markdown-body code {
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+  }
+
   /* Borders for tables/blockquotes */
   .markdown-body table,
   .markdown-body th,
@@ -347,5 +370,11 @@ html.dark .markdown-body ol {
 
   .markdown-body blockquote {
     border-left-color: #ddd !important;
+  }
+
+  .markdown-body img {
+    border-radius: 1rem;
+    max-width: 100% !important;
+    height: auto !important;
   }
 }
