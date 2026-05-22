@@ -181,6 +181,9 @@ export const exportToPdf = async (markdown: string, setAlert?: AlertSetter) => {
                   background-color: white !important;
                   color: #24292f !important;
               }
+              .no-print {
+                  display: none !important;
+              }
           </style>
       </head>
       <body class="markdown-body">

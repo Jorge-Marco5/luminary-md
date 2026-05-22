@@ -294,6 +294,7 @@ html.dark .markdown-body ol {
   header,
   aside,
   .print\:hidden,
+  .no-print,
   #editor-container,
   nav,
   button {
