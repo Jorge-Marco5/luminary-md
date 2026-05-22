@@ -91,12 +91,10 @@ const Sidebar: React.FC<SidebarProps> = ({
               que solo está disponible en navegadores como Chrome, Edge y Opera.
             </p>
             <div className="w-full h-px bg-red-200 dark:bg-red-800 my-4"></div>
-            <strong>
-              <p className="text-sm leading-relaxed">
-                De momento, puedes usar el editor en línea para crear archivos
-                Markdown y descargarlos en tu dispositivo.
-              </p>
-            </strong>
+            <p className="text-sm leading-relaxed font-bold">
+              De momento, puedes usar el editor en línea para crear archivos
+              Markdown y descargarlos en tu dispositivo.
+            </p>
           </div>
         </div>
       ) : (

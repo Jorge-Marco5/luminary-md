@@ -69,7 +69,9 @@ const MarkdownEditor = () => {
 
   const fileTree = organizeFiles(files);
 
-  alertReloadPage();
+  useEffect(() => {
+    alertReloadPage();
+  }, []);
 
   // ctr + s para guardar
   useEffect(() => {
@@ -315,6 +317,7 @@ const MarkdownEditor = () => {
             {/* Export Dropdown */}
             <div className="relative shrink-0 ">
               <select
+                value=""
                 onChange={(e) => {
                   exportData(content, e.target.value, setAlert);
                   e.target.value = "";
@@ -414,27 +417,27 @@ const MarkdownEditor = () => {
         {/* Editor and Preview */}
         <div className="flex-1 flex flex-col md:flex-row overflow-hidden min-w-0 w-full">
           {/* Mobile Edit Button (Floating) */}
-          <div className="md:hidden absolute bottom-6 right-6 z-10 print:hidden">
-            <Drawer.Root>
-              <Drawer.Trigger asChild>
-                <button className="bg-violet-600 text-white p-4 rounded-full shadow-lg hover:bg-violet-700 ">
-                  <Edit3 size={24} />
-                </button>
-              </Drawer.Trigger>
-              <Drawer.Portal>
-                <Drawer.Overlay className="fixed inset-0 bg-black" />
-                <Drawer.Content className="bg-background dark:bg-background flex flex-col rounded-t-[10px] h-[96%] mt-24 fixed bottom-0 left-0 right-0 outline-none z-50">
-                  <Drawer.Title className="hidden">Editar</Drawer.Title>
-                  <div className="p-4 bg-background dark:bg-background rounded-t-[10px] flex-1 flex flex-col">
-                    <div className="mx-auto w-12 h-1.5 shrink-0 rounded-full bg-border dark:bg-border mb-8" />
-                    <div
-                      className="flex-1 flex flex-col min-h-0"
-                      data-vaul-no-drag
-                    >
-                      <div className="flex items-center gap-2 p-2 border-b border-border dark:border-border overflow-x-auto mb-2">
-                        <EditorToolbar onInsertMarkdown={insertMarkdown} />
-                      </div>
-                      {mounted && isMobile && (
+          {mounted && isMobile && (
+            <div className="md:hidden absolute bottom-6 right-6 z-10 print:hidden">
+              <Drawer.Root>
+                <Drawer.Trigger asChild>
+                  <button className="bg-violet-600 text-white p-4 rounded-full shadow-lg hover:bg-violet-700 ">
+                    <Edit3 size={24} />
+                  </button>
+                </Drawer.Trigger>
+                <Drawer.Portal>
+                  <Drawer.Overlay className="fixed inset-0 bg-black" />
+                  <Drawer.Content className="bg-background dark:bg-background flex flex-col rounded-t-[10px] h-[96%] mt-24 fixed bottom-0 left-0 right-0 outline-none z-50">
+                    <Drawer.Title className="hidden">Editar</Drawer.Title>
+                    <div className="p-4 bg-background dark:bg-background rounded-t-[10px] flex-1 flex flex-col">
+                      <div className="mx-auto w-12 h-1.5 shrink-0 rounded-full bg-border dark:bg-border mb-8" />
+                      <div
+                        className="flex-1 flex flex-col min-h-0"
+                        data-vaul-no-drag
+                      >
+                        <div className="flex items-center gap-2 p-2 border-b border-border dark:border-border overflow-x-auto mb-2">
+                          <EditorToolbar onInsertMarkdown={insertMarkdown} />
+                        </div>
                         <div className="flex-1 min-h-0 bg-background dark:bg-background mt-4">
                           <MonacoEditor
                             value={content}
@@ -455,13 +458,13 @@ const MarkdownEditor = () => {
                             }}
                           />
                         </div>
-                      )}
+                      </div>
                     </div>
-                  </div>
-                </Drawer.Content>
-              </Drawer.Portal>
-            </Drawer.Root>
-          </div>
+                  </Drawer.Content>
+                </Drawer.Portal>
+              </Drawer.Root>
+            </div>
+          )}
 
           <div className="hidden md:flex flex-1 flex-col border-r border-border dark:border-border min-w-0 overflow-hidden print:hidden">
             <div className="bg-muted dark:bg-muted border-b border-border dark:border-border">
