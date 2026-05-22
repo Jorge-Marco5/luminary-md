@@ -441,6 +441,7 @@ const MarkdownEditor = () => {
                             onChange={setContent}
                             theme={darkMode ? "dark" : "light"}
                             onScroll={handleEditorScroll}
+                            onUnmount={() => setMonacoInstance(null)}
                             onMount={(editor) => {
                               setMonacoInstance(editor);
                               // Optimize mobile keyboard settings to prevent cursor jumps
@@ -486,6 +487,7 @@ const MarkdownEditor = () => {
                   theme={darkMode ? "dark" : "light"}
                   onScroll={handleEditorScroll}
                   onMount={setMonacoInstance}
+                  onUnmount={() => setMonacoInstance(null)}
                 />
               ) : null}
             </div>

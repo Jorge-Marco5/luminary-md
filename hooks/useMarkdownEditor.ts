@@ -406,6 +406,36 @@ export const useMarkdownEditor = () => {
 
   const [monacoInstance, setMonacoInstance] = useState<MonacoEditorInstance | null>(null);
 
+  // Sync scroll position from preview on editor mount (crucial for mobile drawer reopening)
+  useEffect(() => {
+    if (monacoInstance) {
+      const preview = document.getElementById("preview");
+      if (preview) {
+        const previewScrollHeight = preview.scrollHeight;
+        const previewClientHeight = preview.clientHeight;
+        const previewScrollTop = preview.scrollTop;
+        
+        const denom = previewScrollHeight - previewClientHeight;
+        const percent = denom > 0 ? previewScrollTop / denom : 0;
+        
+        const timer = setTimeout(() => {
+          if (monacoInstance) {
+            isScrolling.current = true;
+            const scrollHeight = monacoInstance.getScrollHeight();
+            const clientHeight = monacoInstance.getLayoutInfo().height;
+            const targetScrollTop = percent * (scrollHeight - clientHeight);
+            monacoInstance.setScrollTop(targetScrollTop);
+            
+            setTimeout(() => {
+              isScrolling.current = false;
+            }, 100);
+          }
+        }, 100);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [monacoInstance]);
+
   const handleEditorScroll = (arg: React.UIEvent<HTMLElement> | number) => {
     if (isScrolling.current) return;
     isScrolling.current = true;

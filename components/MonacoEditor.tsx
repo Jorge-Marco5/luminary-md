@@ -9,6 +9,7 @@ interface MonacoEditorProps {
   theme: "light" | "dark";
   onScroll?: (scrollTop: number) => void;
   onMount?: (editor: MonacoEditorInstance) => void;
+  onUnmount?: () => void;
 }
 
 const MonacoEditor: React.FC<MonacoEditorProps> = ({
@@ -17,13 +18,27 @@ const MonacoEditor: React.FC<MonacoEditorProps> = ({
   theme,
   onScroll,
   onMount,
+  onUnmount,
 }) => {
   const editorRef = useRef<MonacoEditorInstance | null>(null);
   const onScrollRef = useRef(onScroll);
+  const onUnmountRef = useRef(onUnmount);
 
   useEffect(() => {
     onScrollRef.current = onScroll;
   }, [onScroll]);
+
+  useEffect(() => {
+    onUnmountRef.current = onUnmount;
+  }, [onUnmount]);
+
+  useEffect(() => {
+    return () => {
+      if (onUnmountRef.current) {
+        onUnmountRef.current();
+      }
+    };
+  }, []);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleEditorDidMount: OnMount = (editor, monaco) => {
