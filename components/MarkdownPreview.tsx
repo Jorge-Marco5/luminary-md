@@ -196,7 +196,11 @@ const MarkdownPreview: React.FC<MarkdownPreviewProps> = ({
                   {...props}
                 />
               ),
-              pre: CodeBlock,
+              pre: ({ children, ...props }) => (
+                <CodeBlock {...props} darkMode={darkMode}>
+                  {children}
+                </CodeBlock>
+              ),
             }}
           >
             {content || "*Aquí aparecerá la vista previa del markdown*"}

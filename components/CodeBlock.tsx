@@ -1,9 +1,35 @@
 import React, { useState, useRef } from "react";
 import { Check, Copy } from "lucide-react";
+import MermaidRenderer from "./MermaidRenderer";
 
-const CodeBlock = ({ children, ...props }: React.PropsWithChildren) => {
+interface CodeBlockProps extends React.PropsWithChildren {
+  darkMode?: boolean;
+}
+
+const CodeBlock = ({ children, darkMode, ...props }: CodeBlockProps) => {
   const [copied, setCopied] = useState(false);
   const preRef = useRef<HTMLPreElement>(null);
+
+  // Check if the child is a <code> element with class starting with "language-mermaid"
+  let isMermaid = false;
+  let mermaidCode = "";
+
+  if (React.isValidElement(children)) {
+    const childProps = children.props as { className?: string; children?: React.ReactNode };
+    if (
+      children.type === "code" &&
+      childProps &&
+      typeof childProps.className === "string" &&
+      childProps.className.split(" ").some((cls) => cls.startsWith("language-mermaid"))
+    ) {
+      isMermaid = true;
+      mermaidCode = String(childProps.children || "").trim();
+    }
+  }
+
+  if (isMermaid) {
+    return <MermaidRenderer code={mermaidCode} darkMode={!!darkMode} />;
+  }
 
   const handleCopy = () => {
     if (preRef.current) {
@@ -39,3 +65,4 @@ const CodeBlock = ({ children, ...props }: React.PropsWithChildren) => {
 };
 
 export default CodeBlock;
+
