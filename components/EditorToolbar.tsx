@@ -5,7 +5,7 @@ import {
   List,
   ListOrdered,
   Link2,
-  Image,
+  Image as ImageIcon,
   Code,
   Quote,
   Table,
@@ -141,7 +141,7 @@ const EditorToolbar: React.FC<EditorToolbarProps> = ({ onInsertMarkdown }) => {
         className="p-2 hover:bg-accent dark:text-foreground dark:hover:bg-accent rounded shrink-0"
         title="Imagen"
       >
-        <Image size={20} />
+        <ImageIcon size={20} />
       </button>
       <div className="w-px h-6 bg-border dark:bg-border mx-1 shrink-0" />
       <button

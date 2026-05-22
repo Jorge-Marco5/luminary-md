@@ -37,7 +37,7 @@ const exportMarkdown = (content: string, setAlert?: AlertSetter) => {
     URL.revokeObjectURL(url);
     if (setAlert)
       setAlert({ message: "Markdown exportado exitosamente", type: "success" });
-  } catch (error) {
+  } catch {
     if (setAlert)
       setAlert({ message: "Error exportando Markdown", type: "error" });
   }
@@ -103,7 +103,7 @@ const exportHtml = async (content: string, setAlert?: AlertSetter) => {
     URL.revokeObjectURL(url);
     if (setAlert)
       setAlert({ message: "HTML exportado exitosamente", type: "success" });
-  } catch (error) {
+  } catch {
     if (setAlert)
       setAlert({ message: "Error al generar el HTML", type: "error" });
   }

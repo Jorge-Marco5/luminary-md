@@ -40,6 +40,7 @@ const ModalAboutMe: React.FC<ModalAboutMeProps> = ({ isOpen, onClose }) => {
           </svg>
         </button>
         <div className="flex justify-center space-x-4 items-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="hash.svg" alt="logo de Luminary" className="w-15 h-15" />
           <p className="text-foreground text-center text-4xl font-bold">
             Luminary

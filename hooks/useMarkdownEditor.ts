@@ -1,8 +1,12 @@
 import { useState, useRef, useEffect } from "react";
+import type { OnMount } from "@monaco-editor/react";
+import type { FileEntry, AlertMessage, ViewingImage, FileTreeData } from "../types";
+
+type MonacoEditorInstance = Parameters<OnMount>[0];
 
 export const useMarkdownEditor = () => {
-  const [files, setFiles] = useState<any[]>([]);
-  const [currentFile, setCurrentFile] = useState<any | null>(null);
+  const [files, setFiles] = useState<FileEntry[]>([]);
+  const [currentFile, setCurrentFile] = useState<FileEntry | null>(null);
   const [content, setContent] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
@@ -10,16 +14,13 @@ export const useMarkdownEditor = () => {
   const [expandedFolders, setExpandedFolders] = useState<Set<string>>(
     new Set()
   );
-  const [directoryHandles, setDirectoryHandles] = useState<Map<string, any>>(
+  const [directoryHandles, setDirectoryHandles] = useState<Map<string, FileSystemDirectoryHandle>>(
     new Map()
   );
   const [selectedFolderPath, setSelectedFolderPath] = useState<string>("");
-  const [rootHandle, setRootHandle] = useState<any>(null);
+  const [rootHandle, setRootHandle] = useState<FileSystemDirectoryHandle | null>(null);
   const isScrolling = useRef(false);
-  const [alert, setAlert] = useState<{
-    message: string;
-    type: string;
-  } | null>(null);
+  const [alert, setAlert] = useState<AlertMessage | null>(null);
 
   const firstRender = useRef(true);
 
@@ -45,25 +46,23 @@ export const useMarkdownEditor = () => {
   useEffect(() => {
     // Recuperar pero NO escribir (ya lo maneja el otro efecto, pero protegido por firstRender)
     const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      setDarkMode(savedTheme === "dark");
-    } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      setDarkMode(true);
-    } else {
-      // Explicitly handle "no preference saved" case if needed,
-      // but default is false so light mode is default.
-      // If we wanted system dark, we handled it above.
-    }
+    setTimeout(() => {
+      if (savedTheme) {
+        setDarkMode(savedTheme === "dark");
+      } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        setDarkMode(true);
+      }
+    }, 0);
   }, []);
 
   // Helper to scan and update everything
   //escanear archivos .md e imagenes en el directorio
-  const scanDirectory = async (handle: any) => {
-    const handles = new Map<string, any>();
+  const scanDirectory = async (handle: FileSystemDirectoryHandle) => {
+    const handles = new Map<string, FileSystemDirectoryHandle>();
     handles.set("", handle);
 
-    const scan = async (dirHandle: any, path = ""): Promise<any[]> => {
-      const fileList: any[] = [];
+    const scan = async (dirHandle: FileSystemDirectoryHandle, path = ""): Promise<FileEntry[]> => {
+      const fileList: FileEntry[] = [];
       for await (const entry of dirHandle.values()) {
         const entryPath = path ? `${path}/${entry.name}` : entry.name;
         if (entry.kind === "file") {
@@ -78,13 +77,13 @@ export const useMarkdownEditor = () => {
               name: entry.name,
               path: entryPath,
               file: file,
-              handle: entry,
+              handle: entry as FileSystemFileHandle,
               kind: "file",
             });
           }
         } else if (entry.kind === "directory") {
-          handles.set(entryPath, entry);
-          const subFiles = await scan(entry, entryPath);
+          handles.set(entryPath, entry as FileSystemDirectoryHandle);
+          const subFiles = await scan(entry as FileSystemDirectoryHandle, entryPath);
           fileList.push(...subFiles);
         }
       }
@@ -117,12 +116,12 @@ export const useMarkdownEditor = () => {
       })`
     );
 
-    let targetHandle: any;
+    let targetHandle: FileSystemDirectoryHandle | undefined;
     if (folderSelectionInput === null || folderSelectionInput.trim() === "") {
       // User cancelled or left empty, use the currently selected folder
       targetHandle = selectedFolderPath
         ? directoryHandles.get(selectedFolderPath)
-        : rootHandle;
+        : rootHandle || undefined;
     } else {
       // Try to find by index
       const index = parseInt(folderSelectionInput, 10);
@@ -217,9 +216,9 @@ export const useMarkdownEditor = () => {
         message: `Directorio '${name}' creado exitosamente.`,
         type: "success",
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      if (err.name === "NotAllowedError") {
+      if (err instanceof Error && err.name === "NotAllowedError") {
         setAlert({
           message:
             "Error: Permiso de escritura denegado. Asegúrate de haber concedido los permisos necesarios.",
@@ -233,7 +232,7 @@ export const useMarkdownEditor = () => {
 
   const handleOpenFolder = async () => {
     try {
-      const dirHandle = await (window as any).showDirectoryPicker();
+      const dirHandle = await window.showDirectoryPicker();
       setRootHandle(dirHandle);
       await scanDirectory(dirHandle);
       setAlert({ message: "Carpeta abierta exitosamente", type: "success" });
@@ -245,7 +244,7 @@ export const useMarkdownEditor = () => {
 
   const handleOpenFile = async () => {
     try {
-      const [fileHandle] = await (window as any).showOpenFilePicker({
+      const [fileHandle] = await window.showOpenFilePicker({
         types: [
           {
             description: "Markdown Files",
@@ -270,18 +269,15 @@ export const useMarkdownEditor = () => {
     } catch (err) {
       console.error("Error opening file:", err);
       // Ignore abort error
-      if ((err as any).name !== "AbortError") {
+      if (err instanceof Error && err.name !== "AbortError") {
         setAlert({ message: "Error al abrir el archivo", type: "error" });
       }
     }
   };
 
-  const [viewingImage, setViewingImage] = useState<{
-    url: string;
-    alt: string;
-  } | null>(null);
+  const [viewingImage, setViewingImage] = useState<ViewingImage | null>(null);
 
-  const loadFile = async (fileObj: any) => {
+  const loadFile = async (fileObj: FileEntry) => {
     try {
       let file = fileObj.file;
       if (fileObj.handle) {
@@ -291,7 +287,7 @@ export const useMarkdownEditor = () => {
       // Check for image extensions
       if (/\.(png|jpe?g|gif|webp)$/i.test(file.name)) {
         const url = URL.createObjectURL(file);
-        setViewingImage({ url, alt: file.name });
+        setViewingImage({ url, alt: file.name, path: fileObj.path });
         return;
       }
 
@@ -349,22 +345,24 @@ export const useMarkdownEditor = () => {
     if (monacoInstance) {
       const selection = monacoInstance.getSelection();
       const model = monacoInstance.getModel();
-      const text = model.getValueInRange(selection);
+      if (model && selection) {
+        const text = model.getValueInRange(selection);
 
-      const textToInsert = text || placeholder;
-      const newText = before + textToInsert + after;
+        const textToInsert = text || placeholder;
+        const newText = before + textToInsert + after;
 
-      monacoInstance.executeEdits("toolbar", [
-        {
-          range: selection,
-          text: newText,
-          forceMoveMarkers: true,
-        },
-      ]);
+        monacoInstance.executeEdits("toolbar", [
+          {
+            range: selection,
+            text: newText,
+            forceMoveMarkers: true,
+          },
+        ]);
 
-      // Restore focus and selection
-      monacoInstance.focus();
-      return;
+        // Restore focus and selection
+        monacoInstance.focus();
+        return;
+      }
     }
 
     let textarea = document.getElementById("editor") as HTMLTextAreaElement;
@@ -435,7 +433,7 @@ export const useMarkdownEditor = () => {
     }
   };
 
-  const [monacoInstance, setMonacoInstance] = useState<any>(null);
+  const [monacoInstance, setMonacoInstance] = useState<MonacoEditorInstance | null>(null);
 
   const handleEditorScroll = (arg: React.UIEvent<HTMLElement> | number) => {
     if (isScrolling.current) return;
@@ -492,18 +490,18 @@ export const useMarkdownEditor = () => {
     }, 50);
   };
 
-  const organizeFiles = (files: any[]) => {
-    const tree: { [key: string]: any } = {};
+  const organizeFiles = (files: FileEntry[]) => {
+    const tree: FileTreeData = {};
     files.forEach((file) => {
       const parts = file.path.split("/");
       let current = tree;
       parts.forEach((part: string, idx: number) => {
         if (idx === parts.length - 1) {
           if (!current._files) current._files = [];
-          current._files.push(file);
+          current._files!.push(file);
         } else {
           if (!current[part]) current[part] = {};
-          current = current[part];
+          current = current[part] as FileTreeData;
         }
       });
     });

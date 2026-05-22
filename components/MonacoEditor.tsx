@@ -1,12 +1,14 @@
 import React, { useRef, useEffect } from "react";
 import Editor, { OnMount } from "@monaco-editor/react";
 
+type MonacoEditorInstance = Parameters<OnMount>[0];
+
 interface MonacoEditorProps {
   value: string;
   onChange: (value: string) => void;
   theme: "light" | "dark";
   onScroll?: (scrollTop: number) => void;
-  onMount?: (editor: any) => void;
+  onMount?: (editor: MonacoEditorInstance) => void;
 }
 
 const MonacoEditor: React.FC<MonacoEditorProps> = ({
@@ -16,13 +18,14 @@ const MonacoEditor: React.FC<MonacoEditorProps> = ({
   onScroll,
   onMount,
 }) => {
-  const editorRef = useRef<any>(null);
+  const editorRef = useRef<MonacoEditorInstance | null>(null);
   const onScrollRef = useRef(onScroll);
 
   useEffect(() => {
     onScrollRef.current = onScroll;
   }, [onScroll]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleEditorDidMount: OnMount = (editor, monaco) => {
     editorRef.current = editor;
 

@@ -157,6 +157,19 @@ const MarkdownEditor = () => {
     };
   }, [createNewFolder]);
 
+  // esc para cerrar el modal de vista previa de imagen
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setViewingImage(null);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+  }, [setViewingImage]);
+
+
+
   const [modalAboutMeOpen, setModalAboutMeOpen] = useState(false);
 
   const onOpenAbout = () => {
@@ -177,6 +190,8 @@ const MarkdownEditor = () => {
         onClose={() => setViewingImage(null)}
         imageUrl={viewingImage?.url || ""}
         altText={viewingImage?.alt}
+        filePath={viewingImage?.path || ""}
+        currentFile={currentFile}
       />
 
       <ModalAboutMe
@@ -445,6 +460,7 @@ const MarkdownEditor = () => {
             onScroll={handlePreviewScroll}
             files={files}
             onLoadFile={loadFile}
+            currentFile={currentFile}
           />
         </div>
       </div>

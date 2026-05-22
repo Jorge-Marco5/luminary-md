@@ -8,20 +8,21 @@ import {
   Info,
 } from "lucide-react";
 import FileTree from "./FileTree";
+import type { FileEntry, FileTreeData } from "../types";
 
 interface SidebarProps {
   sidebarOpen: boolean;
-  fileTree: { [key: string]: any };
+  fileTree: FileTreeData;
   expandedFolders: Set<string>;
   selectedFolderPath: string;
-  currentFile: any;
+  currentFile: FileEntry | null;
   onOpenFolder: () => void;
   onOpenFile: () => void;
   onCreateFolder: () => void;
   onCreateFile: () => void;
   onToggleFolder: (path: string) => void;
   onSelectFolder: (path: string) => void;
-  onLoadFile: (file: any) => void;
+  onLoadFile: (file: FileEntry) => void;
   onOpenAbout: () => void;
 }
 
@@ -45,7 +46,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   useEffect(() => {
     // Verificar si el navegador soporta File System Access API
     if (!("showDirectoryPicker" in window)) {
-      setIsSupported(false);
+      setTimeout(() => setIsSupported(false), 0);
     }
   }, []);
 
